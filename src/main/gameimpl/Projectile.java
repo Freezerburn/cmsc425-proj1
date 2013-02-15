@@ -2,6 +2,7 @@ package main.gameimpl;
 
 import main.GameEntity;
 import main.texture.Texture;
+import main.texture.TextureManager;
 import stuff.Rect2;
 import stuff.Vector2;
 
@@ -15,18 +16,31 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Projectile extends GameEntity {
     public static final String ENT_NAME = "projectile";
+    public static final String HOSTILE = "no";
+    public static final String FRIENDLY = "yes";
+
+    public static final float PROJECTILE_VEL = 300.0f;
+    public static final float PROJECTILE_WIDTH = 10.0f;
+    public static final float PROJECTILE_HEIGHT = 20.0f;
+    public static final String PROJECTILE_TEX = "res/projectile.png";
 
     protected boolean friendly;
     protected String entName;
 
     protected Vector2 position, velocity, scale;
 
-    public Projectile(Texture tex, float x, float y, float vel_x, float vel_y, boolean friendly) {
-        super(tex);
+    public Projectile(float x, float y, boolean goingUp, boolean friendly) {
+        super(TextureManager.loadTexture(PROJECTILE_TEX));
         this.position = new Vector2(x, y);
-        this.velocity = new Vector2(vel_x, vel_y);
+        if(goingUp) {
+            this.velocity = new Vector2(0.0f, PROJECTILE_VEL);
+        }
+        else {
+            this.velocity = new Vector2(0.0f, -PROJECTILE_VEL);
+        }
+        this.scale = new Vector2(PROJECTILE_WIDTH / mTexture.getWidth(), PROJECTILE_HEIGHT / mTexture.getHeight());
         this.friendly = friendly;
-        this.entName = ENT_NAME + ":" +  (friendly ? "yes" : "no");
+        this.entName = ENT_NAME + ":" +  (friendly ? FRIENDLY : HOSTILE);
     }
 
     @Override

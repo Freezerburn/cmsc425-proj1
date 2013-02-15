@@ -3,6 +3,7 @@ package main.gameimpl;
 import handlers.InputEvent;
 import handlers.InputHandler;
 import handlers.KeyboardHandler;
+import main.Game;
 import main.GameEntity;
 import main.GameRunnable;
 import main.texture.TextureManager;
@@ -59,7 +60,7 @@ public class SpaceInvaders implements GameRunnable {
         this.currentLevel = 0;
         this.levels = new LinkedList<InvadersLevel>();
         this.levels.push(new InvaderLevel1());
-        player = new Player(TextureManager.loadTexture("res/invader.png"), 200.0f, 200.0f);
+        player = new Player(Game.windowWidth / 2.0f + Player.PLAYER_WIDTH / 2.0f, 0.0f);
         InputHandler.getInstance().subscribe(new KeyboardHandler() {
             @Override
             public void handle(InputEvent event) {

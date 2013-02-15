@@ -5,6 +5,7 @@ import handlers.InputHandler;
 import handlers.KeyboardHandler;
 import main.GameEntity;
 import main.texture.Texture;
+import main.texture.TextureManager;
 import org.lwjgl.input.Keyboard;
 import stuff.Preferences;
 import stuff.Rect2;
@@ -20,18 +21,22 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Player extends GameEntity implements KeyboardHandler {
     public static int moveLeftKey, moveRightKey, fireKey;
-    public static final float MOVE_RIGHT_VEL = 100.0f;
-    public static final float MOVE_LEFT_VEL = -100.0f;
+    public static final float MOVE_RIGHT_VEL = 300.0f;
+    public static final float MOVE_LEFT_VEL = -MOVE_RIGHT_VEL;
+    public static final float PLAYER_WIDTH = 48.0f;
+    public static final float PLAYER_HEIGHT = 48.0f;
     public static final String ENT_NAME = "player";
+
+    public static final String PLAYER_TEX = "res/player.png";
 
     protected Vector2 position, scale, velocity;
     protected boolean destroyed;
 
-    public Player(Texture tex, float x, float y) {
-        super(tex);
+    public Player(float x, float y) {
+        super(TextureManager.loadTexture(PLAYER_TEX));
         this.position = new Vector2(x, y);
-        this.scale = new Vector2(1.5f, 1.5f);
         this.velocity = new Vector2(0.0f, 0.0f);
+        this.scale = new Vector2(PLAYER_WIDTH / mTexture.getWidth(), PLAYER_HEIGHT / mTexture.getHeight());
         this.destroyed = false;
         moveLeftKey = Preferences.getInt("player.left", Keyboard.KEY_LEFT);
         System.out.println("Player.moveLeftKey: " + moveLeftKey + " vs " + Keyboard.KEY_LEFT);
@@ -41,6 +46,7 @@ public class Player extends GameEntity implements KeyboardHandler {
     }
 
     protected void fire() {
+        new Projectile(this.position.x, this.position.y, true, true);
     }
 
     @Override
@@ -101,7 +107,6 @@ public class Player extends GameEntity implements KeyboardHandler {
     @Override
     public void handle(InputEvent event) {
         final int keyCode = event.getKeyCode();
-        System.out.println("Player handling: " + keyCode);
         if(keyCode == fireKey) {
             fire();
             event.consume();

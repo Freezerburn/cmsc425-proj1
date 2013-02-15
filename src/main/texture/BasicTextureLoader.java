@@ -1,19 +1,14 @@
 package main.texture;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.OpenGLException;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
@@ -110,17 +105,21 @@ public class BasicTextureLoader implements Runnable {
                 String fileName = "file:" + System.getProperty("user.dir") + "/" + file;
                 image = ImageIO.read(new URL(fileName));
             }
-            BufferedImage compatImage = GraphicsEnvironment
-                    .getLocalGraphicsEnvironment()
-                    .getDefaultScreenDevice()
-                    .getDefaultConfiguration()
-                    .createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
-            Graphics2D g = compatImage.createGraphics();
-            g.drawImage(image, 0, 0, null);
-            g.dispose();
-            System.out.println(image);
-            image = compatImage;
-            System.out.println(image);
+            // Not sure if the call to createCompatibleImage is needed.
+            // Currently doesn't seem so, texture looks almost exactly the same. (slight difference at the edge
+            // of the image where it was darker before. now blends with the background it seems)
+            // Should be faster without the need to create two images.
+//            BufferedImage compatImage = GraphicsEnvironment
+//                    .getLocalGraphicsEnvironment()
+//                    .getDefaultScreenDevice()
+//                    .getDefaultConfiguration()
+//                    .createCompatibleImage(image.getWidth(), image.getHeight(), image.getTransparency());
+//            Graphics2D g = compatImage.createGraphics();
+//            g.drawImage(image, 0, 0, null);
+//            g.dispose();
+//            System.out.println(image);
+//            image = compatImage;
+//            System.out.println(image);
             return genTextureFromBufferedImage(image);
         } catch (IOException e) {
             e.printStackTrace();

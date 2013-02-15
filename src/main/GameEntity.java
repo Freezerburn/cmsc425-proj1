@@ -1,5 +1,7 @@
 package main;
 
+import main.gameimpl.Player;
+import main.gameimpl.Projectile;
 import main.texture.Texture;
 import stuff.Rect2;
 import stuff.TwoTuple;
@@ -58,6 +60,25 @@ public abstract class GameEntity {
 
         for(GameEntity ge : allEntities) {
             ge.tick(dt);
+        }
+    }
+
+    public static void collideAll() {
+        for(GameEntity ge : allEntities) {
+            if(ge.getEntName().startsWith(Player.ENT_NAME)) {
+                Rect2 playerBounds = ge.getBounds();
+                for(GameEntity other_ge : allEntities) {
+                    if(ge.getEntName().startsWith(Projectile.ENT_NAME)) {
+                        String[] parsed = ge.getEntName().split(":");
+                        if(parsed[3].equals(Projectile.HOSTILE)) {
+                            Rect2 projectileBounds = other_ge.getBounds();
+                            if(projectileBounds.collidesWith(playerBounds)) {
+                                ge.handleMessage("collision:" + other_ge.getEntName());
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 

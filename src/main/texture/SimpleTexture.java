@@ -125,7 +125,7 @@ public class SimpleTexture extends Texture {
 
     public void bind(float dt) {
         if (Texture.lastBound != mName) {
-            System.out.println("Binding " + mName);
+//            System.out.println("Binding " + mName);
             GL11.glBindTexture(mTarget, mName);
             Texture.lastBound = mName;
         }

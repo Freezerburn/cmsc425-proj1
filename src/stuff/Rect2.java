@@ -29,4 +29,12 @@ public class Rect2 {
     public float getTop() {
         return this.topLeft.y;
     }
+
+    public boolean collidesWith(Rect2 other) {
+        if(other.getLeft() > this.getRight()) return false;
+        else if(other.getRight() < this.getLeft()) return false;
+        else if(other.getTop() < this.getBottom()) return false;
+        else if(other.getBottom() > this.getTop()) return false;
+        return true;
+    }
 }
