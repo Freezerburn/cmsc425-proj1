@@ -1,6 +1,7 @@
 package main;
 
 import main.texture.Texture;
+import stuff.Rect2;
 import stuff.TwoTuple;
 
 import java.util.Collections;
@@ -15,7 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
  * Date: 2/9/13
  * Time: 12:02 PM
  */
-public class GameEntity {
+public abstract class GameEntity {
     protected static long nextUid = 0;
     protected static LinkedList<GameEntity> allEntities = new LinkedList<GameEntity>();
     protected static LinkedList<TwoTuple<Boolean, GameEntity>> addRemoveLater = new LinkedList<TwoTuple<Boolean, GameEntity>>();
@@ -36,7 +37,7 @@ public class GameEntity {
         addRemoveLater.push(new TwoTuple<Boolean, GameEntity>(true, ge));
     }
 
-    private static void addEntityt(GameEntity ge) {
+    private static void addEntity(GameEntity ge) {
         addRemoveLater.push(new TwoTuple<Boolean, GameEntity>(false, ge));
     }
 
@@ -74,13 +75,15 @@ public class GameEntity {
         this.mTexture = tex;
     }
 
-    public void tick(float dt) {
-    }
+    public abstract void tick(float dt);
+
+    public abstract void preRender(float dt);
+    public abstract void postRender(float dt);
 
     public void render(float dt) {
         mTexture.bind(dt);
-        glPushMatrix();
-        glScalef((float)mTexture.getWidth() / 2.0f, (float)mTexture.getHeight() / 2.0f, 0.0f);
+//        glPushMatrix();
+//        glScalef(mTexture.getWidth(), mTexture.getHeight(), 0.0f);
         glBegin(GL_QUADS);
             glColor3d(1.0, 1.0, 1.0);
 
@@ -96,8 +99,20 @@ public class GameEntity {
             glTexCoord2d(mTexture.getTexBottomRightX(), mTexture.getTexBottomRightY()); // bottom right
             glVertex2f(1.0f, 1.0f); // top right
         glEnd();
-        glPopMatrix();
+//        glPopMatrix();
     }
+
+    public final void destroy() {
+        GameEntity.destroyEntity(this);
+        onDestroy();
+    }
+
+    protected abstract void onDestroy();
+
+    protected abstract void handleMessage(String message);
+    public abstract boolean isDestroyed();
+    public abstract Rect2 getBounds();
+    public abstract String getEntName();
 
     public long getUid() {
         return this.uid;

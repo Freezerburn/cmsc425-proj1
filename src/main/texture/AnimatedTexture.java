@@ -18,21 +18,20 @@ public class AnimatedTexture extends Texture {
     private boolean mIsPaused;
     private int mStopAt;
 
-    public AnimatedTexture( Texture[] frames, double[] frameSwapTimes ) {
-        this( frames, frameSwapTimes, false );
+    public AnimatedTexture(Texture[] frames, double[] frameSwapTimes) {
+        this(frames, frameSwapTimes, false);
     }
 
-    public AnimatedTexture( Texture[] frames, double[] frameSwapTimes, boolean reverse ) {
+    public AnimatedTexture(Texture[] frames, double[] frameSwapTimes, boolean reverse) {
         this.mFrames = frames;
-        if( frameSwapTimes.length < frames.length ) {
-            double[] newSwapTimes = new double[ frames.length ];
-            System.arraycopy( frameSwapTimes, 0, newSwapTimes, 0, frameSwapTimes.length );
-            Arrays.fill( newSwapTimes,
+        if (frameSwapTimes.length < frames.length) {
+            double[] newSwapTimes = new double[frames.length];
+            System.arraycopy(frameSwapTimes, 0, newSwapTimes, 0, frameSwapTimes.length);
+            Arrays.fill(newSwapTimes,
                     frameSwapTimes.length, newSwapTimes.length,
-                    frameSwapTimes[ frameSwapTimes.length -1  ] );
+                    frameSwapTimes[frameSwapTimes.length - 1]);
             this.mFrameSwapTimes = newSwapTimes;
-        }
-        else {
+        } else {
             this.mFrameSwapTimes = frameSwapTimes;
         }
         this.mCurrentFrame = 0;
@@ -44,140 +43,156 @@ public class AnimatedTexture extends Texture {
     }
 
     @Override
+    public void alloc() {
+        for (Texture t : mFrames) {
+            t.alloc();
+        }
+    }
+
+    @Override
+    public void destroy() {
+        for (Texture t : mFrames) {
+            t.destroy();
+        }
+    }
+
+    @Override
     public float getTexBottomRightX() {
-        return mFrames[ mCurrentFrame ].getTexBottomRightX();
+        return mFrames[mCurrentFrame].getTexBottomRightX();
     }
 
     @Override
     public float getTexTopRightX() {
-        return mFrames[ mCurrentFrame ].getTexTopRightX();
+        return mFrames[mCurrentFrame].getTexTopRightX();
     }
 
     @Override
     public float getTexTopLeftX() {
-        return mFrames[ mCurrentFrame ].getTexTopLeftX();
+        return mFrames[mCurrentFrame].getTexTopLeftX();
     }
 
     @Override
     public float getTexBottomLeftX() {
-        return mFrames[ mCurrentFrame ].getTexBottomLeftX();
+        return mFrames[mCurrentFrame].getTexBottomLeftX();
     }
 
     @Override
     public float getTexBottomRightY() {
-        return mFrames[ mCurrentFrame ].getTexBottomRightY();
+        return mFrames[mCurrentFrame].getTexBottomRightY();
     }
 
     @Override
     public float getTexTopRightY() {
-        return mFrames[ mCurrentFrame ].getTexTopRightY();
+        return mFrames[mCurrentFrame].getTexTopRightY();
     }
 
     @Override
     public float getTexTopLeftY() {
-        return mFrames[ mCurrentFrame ].getTexTopLeftY();
+        return mFrames[mCurrentFrame].getTexTopLeftY();
     }
 
     @Override
     public float getTexBottomLeftY() {
-        return mFrames[ mCurrentFrame ].getTexBottomLeftY();
+        return mFrames[mCurrentFrame].getTexBottomLeftY();
     }
 
     @Override
-    public double getWidth() {
-        return mFrames[ mCurrentFrame ].getWidth();
+    public float getWidth() {
+        return mFrames[mCurrentFrame].getWidth();
     }
 
     @Override
-    public double getHeight() {
-        return mFrames[ mCurrentFrame ].getHeight();
+    public float getHeight() {
+        return mFrames[mCurrentFrame].getHeight();
     }
 
     @Override
     public int getName() {
-        return mFrames[ mCurrentFrame ].getName();
+        return mFrames[mCurrentFrame].getName();
     }
 
     @Override
     public int getTarget() {
-        return mFrames[ mCurrentFrame ].getTarget();
+        return mFrames[mCurrentFrame].getTarget();
     }
 
     @Override
-    public void setWidth( double width ) {
-        mFrames[ mCurrentFrame ].setWidth( width );
+    public String getManagerHandle() {
+        throw new UnsupportedOperationException("UNIMPL: manager handler never created for animated textures yet");
     }
 
     @Override
-    public void setHeight( double height ) {
-        mFrames[ mCurrentFrame ].setHeight( height );
+    public void setWidth(double width) {
+        mFrames[mCurrentFrame].setWidth(width);
+    }
+
+    @Override
+    public void setHeight(double height) {
+        mFrames[mCurrentFrame].setHeight(height);
     }
 
     @Override
     public void bind(float dt) {
-    	if( mIsPaused || mCurrentFrame == mStopAt ) {
-    		mFrames[ mCurrentFrame ].bind(dt);
-    		return;
-    	}
-    	
+        if (mIsPaused || mCurrentFrame == mStopAt) {
+            mFrames[mCurrentFrame].bind(dt);
+            return;
+        }
+
         mCurrentTime += dt;
-        while( mCurrentTime >= mFrameSwapTimes[ mCurrentFrame ] ) {
-            mCurrentTime -= mFrameSwapTimes[ mCurrentFrame ];
-            if( mShouldReverse ) {
-                if( mReversing ) {
+        while (mCurrentTime >= mFrameSwapTimes[mCurrentFrame]) {
+            mCurrentTime -= mFrameSwapTimes[mCurrentFrame];
+            if (mShouldReverse) {
+                if (mReversing) {
                     mCurrentFrame--;
-                }
-                else {
+                } else {
                     mCurrentFrame++;
                 }
-                if( mCurrentFrame == mFrames.length ) {
+                if (mCurrentFrame == mFrames.length) {
                     mCurrentFrame -= 2;
                     mReversing = true;
-                }
-                else if( mCurrentFrame == -1 ) {
+                } else if (mCurrentFrame == -1) {
                     mCurrentFrame += 2;
                     mReversing = false;
                 }
-            }
-            else {
-                mCurrentFrame = ( mCurrentFrame + 1 ) % mFrames.length;
+            } else {
+                mCurrentFrame = (mCurrentFrame + 1) % mFrames.length;
             }
         }
-        mFrames[ mCurrentFrame ].bind(dt);
+        mFrames[mCurrentFrame].bind(dt);
     }
 
     @Override
     public boolean isValidTexture() {
-        return mFrames[ mCurrentFrame ].isValidTexture();
+        return mFrames[mCurrentFrame].isValidTexture();
     }
-    
+
     @Override
     public void restart() {
-    	mCurrentFrame = 0;
+        mCurrentFrame = 0;
     }
 
-	@Override
-	public void pause() {
-		mIsPaused = true;
-	}
+    @Override
+    public void pause() {
+        mIsPaused = true;
+    }
 
-	@Override
-	public void resume() {
-		mIsPaused = false;
-	}
+    @Override
+    public void resume() {
+        mIsPaused = false;
+    }
 
-	@Override
-	public void stopAt( int frame ) {
-		mStopAt = frame;
-	}
+    @Override
+    public void stopAt(int frame) {
+        mStopAt = frame;
+    }
 
-	@Override
-	public void stopAfterFullCycle() {
-		mStopAt = mFrames.length - 1;
-	}
+    @Override
+    public void stopAfterFullCycle() {
+        mStopAt = mFrames.length - 1;
+    }
 
-	@Override
-	public int numFrames() {
-		return mFrames.length;
-	}
+    @Override
+    public int numFrames() {
+        return mFrames.length;
+    }
 }

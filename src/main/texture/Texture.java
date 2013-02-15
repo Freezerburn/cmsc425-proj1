@@ -21,8 +21,8 @@ public abstract class Texture {
     public abstract float getTexTopLeftY();
     public abstract float getTexBottomLeftY();
 
-    public abstract double getWidth();
-    public abstract double getHeight();
+    public abstract float getWidth();
+    public abstract float getHeight();
 
     public abstract int getName();
     public abstract int getTarget();

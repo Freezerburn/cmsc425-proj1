@@ -47,7 +47,7 @@ public class TextureManager {
 
     public static Texture loadTexture(String file, boolean removeBackground) {
         String name = file.substring(0, file.lastIndexOf("."));
-        return loadTexture(file, name, removeBackground);
+        return loadTexture(name, file, removeBackground);
     }
 
     public static Texture loadTexture(String name, String file) {
@@ -82,7 +82,7 @@ public class TextureManager {
 
     // Actual impl
     public static Texture[] loadTileMap(String name, String file, int width, int height, boolean removeBackground) {
-        BasicTileMapLoader loader = new BasicTileMapLoader(file, width, height, removeBackground);
+        BasicTileMapLoader loader = new BasicTileMapLoader(file, name, width, height, removeBackground);
         loader.run();
         for (int y = 0; y < loader.tilesHigh; y++) {
             for (int x = 0; x < loader.tilesWide; x++) {
@@ -135,7 +135,7 @@ public class TextureManager {
     }
 
     public static void preloadTileMap(String name, String file, int width, int height, boolean removeBackground) {
-        BasicTileMapLoader loader = new BasicTileMapLoader(file, width, height, removeBackground);
+        BasicTileMapLoader loader = new BasicTileMapLoader(file, name, width, height, removeBackground);
         loader.run();
         for (int y = 0; y < loader.tilesHigh; y++) {
             for (int x = 0; x < loader.tilesWide; x++) {

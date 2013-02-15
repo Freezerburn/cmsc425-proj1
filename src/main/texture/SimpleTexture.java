@@ -94,11 +94,11 @@ public class SimpleTexture extends Texture {
         return my1;
     }
 
-    public double getWidth() {
+    public float getWidth() {
         return mWidth;
     }
 
-    public double getHeight() {
+    public float getHeight() {
         return mHeight;
     }
 
@@ -108,6 +108,11 @@ public class SimpleTexture extends Texture {
 
     public int getTarget() {
         return mTarget;
+    }
+
+    @Override
+    public String getManagerHandle() {
+        return managerHandle;
     }
 
     public void setWidth(double width) {

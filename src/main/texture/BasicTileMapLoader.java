@@ -13,14 +13,14 @@ public class BasicTileMapLoader implements Runnable {
     protected BasicTextureLoader loader;
     protected int tileWidth, tileHeight;
 
-    public BasicTileMapLoader( String file, int tileWidth, int tileHeight, boolean shouldRemoveBackground ) {
-        loader = new BasicTextureLoader( file, shouldRemoveBackground );
+    public BasicTileMapLoader(String file, String managerHandle, int tileWidth, int tileHeight, boolean shouldRemoveBackground) {
+        loader = new BasicTextureLoader(file, managerHandle, shouldRemoveBackground);
         this.tileWidth = tileWidth;
         this.tileHeight = tileHeight;
     }
 
-    public SimpleTexture get( int x, int y ) {
-        return textures[ y * tilesWide + x ];
+    public SimpleTexture get(int x, int y) {
+        return textures[y * tilesWide + x];
     }
 
     @Override
@@ -31,13 +31,14 @@ public class BasicTileMapLoader implements Runnable {
         tilesHigh = (int) (masterTexture.getHeight() / tileHeight);
         double texWidth = tileWidth / masterTexture.getWidth();
         double texHeight = tileHeight / masterTexture.getHeight();
-        textures = new SimpleTexture[ tilesHigh * tilesWide ];
-        for( int y = 0; y < tilesHigh; y++ ) {
-            for( int x = 0; x < tilesWide; x++ ) {
-                textures[ y * tilesWide + x ] = new SimpleTexture( GL11.GL_TEXTURE_2D, masterTexture.getName(),
+        textures = new SimpleTexture[tilesHigh * tilesWide];
+        for (int y = 0; y < tilesHigh; y++) {
+            for (int x = 0; x < tilesWide; x++) {
+                textures[y * tilesWide + x] = new SimpleTexture(GL11.GL_TEXTURE_2D, masterTexture.getName(),
+                        masterTexture.getManagerHandle(),
                         tileWidth, tileHeight,
-                        texWidth * x, texWidth * (x+1),
-                        texHeight * y, texHeight * (y+1) );
+                        texWidth * x, texWidth * (x + 1),
+                        texHeight * y, texHeight * (y + 1));
             }
         }
     }
