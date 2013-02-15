@@ -18,7 +18,7 @@ public class InputHandler {
     private InputHandler() {
         try {
             Keyboard.create();
-            Keyboard.enableRepeatEvents(true);
+            Keyboard.enableRepeatEvents(false);
         } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(1);

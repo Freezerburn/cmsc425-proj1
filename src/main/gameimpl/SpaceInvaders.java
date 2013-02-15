@@ -79,14 +79,15 @@ public class SpaceInvaders implements GameRunnable {
             totalTicks++;
             InputHandler.getInstance().update();
 
+            glClear(GL_COLOR_BUFFER_BIT);
             glMatrixMode(GL_MODELVIEW);
             glLoadIdentity();
 
             long curTime = System.nanoTime();
-            float delta = (curTime - lastTime) / 1000000000.0f;
-//            if(totalTicks % 30 == 0) {
-//                System.out.println("DT: " + delta);
-//            }
+            float delta = (curTime - lastTime) / 10000000000.0f;
+            if(totalTicks % 30 == 0) {
+                System.out.println("DT: " + delta);
+            }
             lastTime = curTime;
             GameEntity.tickAll(delta);
             GameEntity.renderAll(delta);

@@ -62,7 +62,9 @@ public abstract class GameEntity {
 
     public static void renderAll(float dt) {
         for(GameEntity ge : allEntities) {
+            ge.preRender(dt);
             ge.render(dt);
+            ge.postRender(dt);
         }
     }
 
@@ -73,6 +75,7 @@ public abstract class GameEntity {
 
     public GameEntity(Texture tex) {
         this.mTexture = tex;
+        GameEntity.addEntity(this);
     }
 
     public abstract void tick(float dt);

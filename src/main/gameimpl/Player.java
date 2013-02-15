@@ -34,6 +34,7 @@ public class Player extends GameEntity implements KeyboardHandler {
         this.velocity = new Vector2(0.0f, 0.0f);
         this.destroyed = false;
         moveLeftKey = Preferences.getInt("player.left", Keyboard.KEY_LEFT);
+        System.out.println("Player.moveLeftKey: " + moveLeftKey + " vs " + Keyboard.KEY_LEFT);
         moveRightKey = Preferences.getInt("player.right", Keyboard.KEY_RIGHT);
         fireKey = Preferences.getInt("player.fire", Keyboard.KEY_SPACE);
         InputHandler.getInstance().subscribe(this);
@@ -44,12 +45,17 @@ public class Player extends GameEntity implements KeyboardHandler {
 
     @Override
     public void tick(float dt) {
+        if(this.velocity.x != 0.0f) {
+            System.out.println("Moving: " + this.velocity.x * dt + " distance");
+        }
+        this.position.x += this.velocity.x * dt;
+        this.position.y += this.velocity.y * dt;
     }
 
     @Override
     public void preRender(float dt) {
-        this.mTexture.bind(dt);
         glEnable(GL_TEXTURE_2D);
+        this.mTexture.bind(dt);
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
         glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
@@ -101,25 +107,34 @@ public class Player extends GameEntity implements KeyboardHandler {
     @Override
     public void handle(InputEvent event) {
         final int keyCode = event.getKeyCode();
+        System.out.println("Player handling: " + keyCode);
         if(keyCode == fireKey) {
             fire();
             event.consume();
         }
         if(keyCode == moveLeftKey) {
             if(event.isPressed()) {
-                velocity.x += MOVE_LEFT_VEL;
+                if(velocity.x >= 0.0) {
+                    velocity.x += MOVE_LEFT_VEL;
+                }
             }
             else {
-                velocity.x += MOVE_RIGHT_VEL;
+                if(velocity.x <= 0.0) {
+                    velocity.x += MOVE_RIGHT_VEL;
+                }
             }
             event.consume();
         }
         else if(keyCode == moveRightKey) {
             if(event.isPressed()) {
-                velocity.x += MOVE_RIGHT_VEL;
+                if(velocity.x <= 0.0) {
+                    velocity.x += MOVE_RIGHT_VEL;
+                }
             }
             else {
-                velocity.x += MOVE_LEFT_VEL;
+                if(velocity.x >= 0.0) {
+                    velocity.x += MOVE_LEFT_VEL;
+                }
             }
             event.consume();
         }
