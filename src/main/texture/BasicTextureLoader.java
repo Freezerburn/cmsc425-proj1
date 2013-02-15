@@ -50,161 +50,6 @@ public class BasicTextureLoader implements Runnable {
         this.mKeepBufferedImage = keepBufferedImage;
     }
 
-    protected ByteBuffer convertBufferedImageToByteBuffer(BufferedImage image) {
-        ByteBuffer buffer = ByteBuffer.allocateDirect(width * height * 4);
-        buffer.order(ByteOrder.nativeOrder());
-        byte[] bytes = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        switch (image.getType()) {
-            case BufferedImage.TYPE_3BYTE_BGR:
-                convertBGRBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case BufferedImage.TYPE_4BYTE_ABGR:
-                convertABGRBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case BufferedImage.TYPE_4BYTE_ABGR_PRE:
-                convertBGRBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case BufferedImage.TYPE_INT_ARGB:
-                convertARGBBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case BufferedImage.TYPE_INT_BGR:
-                convertBGRBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case BufferedImage.TYPE_INT_RGB:
-                convertRGBBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            case 12:
-                convertRGBBufferedImageToByteBuffer(buffer, bytes);
-                break;
-            default:
-                throw new OpenGLException("Unsupported image type: " + image.getType());
-        }
-        return buffer;
-    }
-
-    protected void convertARGBBufferedImageToByteBuffer(ByteBuffer buffer, byte[] bytes) {
-        byte backgrounda = (byte) 255;
-        byte backgroundr = (byte) 255;
-        byte backgroundg = (byte) 255;
-        byte backgroundb = (byte) 255;
-        for (int i = 0; i < bytes.length; i += 4) {
-            byte alpha = bytes[i];
-            byte red = bytes[i + 1];
-            byte green = bytes[i + 2];
-            byte blue = bytes[i + 3];
-            if (mShouldRemoveBackground) {
-                if (i == 0) {
-                    backgrounda = alpha;
-                    backgroundr = red;
-                    backgroundg = green;
-                    backgroundb = blue;
-                } else if (alpha == backgrounda && red == backgroundr &&
-                        green == backgroundg && blue == backgroundb) {
-                    alpha = 0;
-                }
-            }
-            buffer.put(red);
-            buffer.put(green);
-            buffer.put(blue);
-            buffer.put(alpha);
-        }
-        buffer.rewind();
-    }
-
-    protected void convertABGRBufferedImageToByteBuffer(ByteBuffer buffer, byte[] bytes) {
-        byte backgrounda = (byte) 255;
-        byte backgroundr = (byte) 255;
-        byte backgroundg = (byte) 255;
-        byte backgroundb = (byte) 255;
-//        System.err.println( buffer.limit() );
-        for (int i = 0; i < bytes.length; i += 4) {
-            byte alpha = bytes[i];
-            byte blue = bytes[i + 1];
-            byte green = bytes[i + 2];
-            byte red = bytes[i + 3];
-            if (mShouldRemoveBackground) {
-                if (i == 0) {
-                    backgrounda = alpha;
-                    backgroundr = red;
-                    backgroundg = green;
-                    backgroundb = blue;
-                } else if (alpha == backgrounda && red == backgroundr &&
-                        green == backgroundg && blue == backgroundb) {
-                    alpha = 0;
-                }
-            }
-            buffer.put(red);
-            buffer.put(green);
-            buffer.put(blue);
-            buffer.put(alpha);
-        }
-        buffer.rewind();
-    }
-
-    protected void convertBGRBufferedImageToByteBuffer(ByteBuffer buffer, byte[] bytes) {
-        byte backgrounda = (byte) 255;
-        byte backgroundr = (byte) 255;
-        byte backgroundg = (byte) 255;
-        byte backgroundb = (byte) 255;
-        for (int i = 0; i < bytes.length; i += 3) {
-            byte blue = bytes[i];
-            byte green = bytes[i + 1];
-            byte red = bytes[i + 2];
-            byte alpha = (byte) 0xFF;
-            buffer.put(red);
-            buffer.put(green);
-            buffer.put(blue);
-            if (mShouldRemoveBackground) {
-                if (i == 0) {
-                    backgrounda = alpha;
-                    backgroundr = red;
-                    backgroundg = green;
-                    backgroundb = blue;
-                } else if (alpha == backgrounda && red == backgroundr &&
-                        green == backgroundg && blue == backgroundb) {
-                    alpha = 0;
-                }
-            }
-            buffer.put(alpha);
-        }
-        buffer.rewind();
-    }
-
-    protected void convertRGBBufferedImageToByteBuffer(ByteBuffer buffer, byte[] bytes) {
-        byte backgrounda = (byte) 255;
-        byte backgroundr = (byte) 255;
-        byte backgroundg = (byte) 255;
-        byte backgroundb = (byte) 255;
-        for (int i = 0; i < bytes.length; i += 3) {
-            byte red = bytes[i];
-            byte green = bytes[i + 1];
-            byte blue = bytes[i + 2];
-            byte alpha = (byte) 0xFF;
-            buffer.put(red);
-            buffer.put(green);
-            buffer.put(blue);
-            if (mShouldRemoveBackground) {
-                if (i == 0) {
-                    backgrounda = alpha;
-                    backgroundr = red;
-                    backgroundg = green;
-                    backgroundb = blue;
-                } else if (alpha == backgrounda && red == backgroundr &&
-                        green == backgroundg && blue == backgroundb) {
-                    alpha = 0;
-                }
-            }
-            buffer.put(alpha);
-        }
-        buffer.rewind();
-    }
-
-    protected int nextPowerOf2(int num) {
-        int ret = 2;
-        while (ret < num) ret *= 2;
-        return ret;
-    }
-
     protected ByteBuffer newConvertImage(BufferedImage image) {
         int[] pixels = new int[image.getWidth() * image.getHeight()];
         image.getRGB(0, 0, image.getWidth(), image.getHeight(), pixels, 0, image.getWidth());
@@ -228,17 +73,15 @@ public class BasicTextureLoader implements Runnable {
     protected int genTextureFromBufferedImage(BufferedImage image) {
         int tex = -1;
         try {
-//            width = nextPowerOf2( image.getWidth() );
-//            height = nextPowerOf2( image.getHeight() );
             width = image.getWidth();
             height = image.getHeight();
             ByteBuffer imageBuffer = newConvertImage(image);
             tex = glGenTextures();
             glBindTexture(GL_TEXTURE_2D, tex);
 
+            // These parameters make the image actually look nice and look like the image with no artifacts.
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -265,7 +108,6 @@ public class BasicTextureLoader implements Runnable {
                 image = ImageIO.read(new URL(fileName));
             } else {
                 String fileName = "file:" + System.getProperty("user.dir") + "/" + file;
-//                System.err.println( fileName );
                 image = ImageIO.read(new URL(fileName));
             }
             BufferedImage compatImage = GraphicsEnvironment
