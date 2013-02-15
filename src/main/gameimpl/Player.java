@@ -45,17 +45,12 @@ public class Player extends GameEntity implements KeyboardHandler {
 
     @Override
     public void tick(float dt) {
-        if(this.velocity.x != 0.0f) {
-            System.out.println("Moving: " + this.velocity.x * dt + " distance");
-        }
         this.position.x += this.velocity.x * dt;
         this.position.y += this.velocity.y * dt;
     }
 
     @Override
     public void preRender(float dt) {
-        glEnable(GL_TEXTURE_2D);
-        this.mTexture.bind(dt);
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
         glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
@@ -64,7 +59,6 @@ public class Player extends GameEntity implements KeyboardHandler {
     @Override
     public void postRender(float dt) {
         glPopMatrix();
-        glDisable(GL_TEXTURE_2D);
     }
 
     @Override

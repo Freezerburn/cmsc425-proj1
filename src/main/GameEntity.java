@@ -54,6 +54,7 @@ public abstract class GameEntity {
                 allEntities.add(tt.two);
             }
         }
+        addRemoveLater.clear();
 
         for(GameEntity ge : allEntities) {
             ge.tick(dt);

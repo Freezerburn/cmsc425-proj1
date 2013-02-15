@@ -41,14 +41,14 @@ public class SpaceInvaders implements GameRunnable {
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glShadeModel(GL_SMOOTH);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+//        glShadeModel(GL_SMOOTH);
+//        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 
         glViewport(0, 0, width, height);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluOrtho2D(0, width, 0, height);
-        glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     }
 
     @Override
@@ -84,10 +84,10 @@ public class SpaceInvaders implements GameRunnable {
             glLoadIdentity();
 
             long curTime = System.nanoTime();
-            float delta = (curTime - lastTime) / 10000000000.0f;
-            if(totalTicks % 30 == 0) {
-                System.out.println("DT: " + delta);
-            }
+            float delta = (curTime - lastTime) / 1000000000.0f;
+//            if(totalTicks % 30 == 0) {
+//                System.out.println("DT: " + delta);
+//            }
             lastTime = curTime;
             GameEntity.tickAll(delta);
             GameEntity.renderAll(delta);
