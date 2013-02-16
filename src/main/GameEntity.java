@@ -1,5 +1,6 @@
 package main;
 
+import main.gameimpl.InvaderEnemy;
 import main.gameimpl.Player;
 import main.gameimpl.Projectile;
 import main.texture.Texture;
@@ -65,14 +66,29 @@ public abstract class GameEntity {
 
     public static void collideAll() {
         for(GameEntity ge : allEntities) {
-            if(ge.getEntName().startsWith(Player.ENT_NAME)) {
-                Rect2 playerBounds = ge.getBounds();
+//            System.out.println(ge.getEntName() + ", " + Projectile.ENT_NAME);
+            if(ge.getEntName().startsWith(Projectile.ENT_NAME)) {
+//                System.out.println("found projetile");
+                Rect2 projectileBounds = ge.getBounds();
+                String[] projectileParsed = ge.getEntName().split(":");
                 for(GameEntity other_ge : allEntities) {
-                    if(ge.getEntName().startsWith(Projectile.ENT_NAME)) {
-                        String[] parsed = ge.getEntName().split(":");
-                        if(parsed[3].equals(Projectile.HOSTILE)) {
-                            Rect2 projectileBounds = other_ge.getBounds();
-                            if(projectileBounds.collidesWith(playerBounds)) {
+                    if(other_ge.getEntName().startsWith(Player.ENT_NAME)) {
+                        if(projectileParsed[1].equals(Projectile.HOSTILE)) {
+                            Rect2 playerBounds = other_ge.getBounds();
+                            boolean colliding = projectileBounds.collidesWith(playerBounds);
+//                            System.out.println("Found hostile bullet. Colliding: " + colliding);
+                            if(colliding) {
+                                other_ge.handleMessage("collision:" + ge.getEntName());
+                            }
+                        }
+                    }
+                    else if(other_ge.getEntName().startsWith(InvaderEnemy.ENT_NAME)) {
+                        if(projectileParsed[1].equals(Projectile.FRIENDLY)) {
+                            Rect2 invaderBounds = other_ge.getBounds();
+                            boolean colliding = projectileBounds.collidesWith(invaderBounds);
+//                            System.out.println("Found friendly bullet. Colliding: " + colliding);
+                            if(colliding) {
+                                other_ge.handleMessage("collision:" + ge.getEntName());
                                 ge.handleMessage("collision:" + other_ge.getEntName());
                             }
                         }

@@ -11,6 +11,9 @@ import stuff.Preferences;
 import stuff.Rect2;
 import stuff.Vector2;
 
+import java.util.LinkedList;
+import java.util.ListIterator;
+
 import static org.lwjgl.opengl.GL11.*;
 
 /**
@@ -29,8 +32,14 @@ public class Player extends GameEntity implements KeyboardHandler {
 
     public static final String PLAYER_TEX = "res/player.png";
 
+    protected static final int MAX_SHOTS = 5;
+    protected static final float TIME_BETWEEN_SHOTS = 0.5f;
+
     protected Vector2 position, scale, velocity;
     protected boolean destroyed;
+    protected LinkedList<Projectile> shots;
+    protected float timeSinceLastShot;
+    protected Vector2 projectileStart;
 
     public Player(float x, float y) {
         super(TextureManager.loadTexture(PLAYER_TEX));
@@ -38,6 +47,10 @@ public class Player extends GameEntity implements KeyboardHandler {
         this.velocity = new Vector2(0.0f, 0.0f);
         this.scale = new Vector2(PLAYER_WIDTH / mTexture.getWidth(), PLAYER_HEIGHT / mTexture.getHeight());
         this.destroyed = false;
+        this.shots = new LinkedList<Projectile>();
+        this.timeSinceLastShot = TIME_BETWEEN_SHOTS;
+        this.projectileStart = new Vector2(x + PLAYER_WIDTH / 2.0f - Projectile.PROJECTILE_WIDTH / 2.0f,
+                y + Projectile.PROJECTILE_HEIGHT * 2.0f + 3.0f);
         moveLeftKey = Preferences.getInt("player.left", Keyboard.KEY_LEFT);
         System.out.println("Player.moveLeftKey: " + moveLeftKey + " vs " + Keyboard.KEY_LEFT);
         moveRightKey = Preferences.getInt("player.right", Keyboard.KEY_RIGHT);
@@ -46,12 +59,28 @@ public class Player extends GameEntity implements KeyboardHandler {
     }
 
     protected void fire() {
-        new Projectile(this.position.x, this.position.y, true, true);
+        if(timeSinceLastShot > TIME_BETWEEN_SHOTS) {
+            if(shots.size() < MAX_SHOTS) {
+                Projectile shot = new Projectile(this.projectileStart.x, this.projectileStart.y, true, true);
+                shots.push(shot);
+            }
+        }
     }
 
     @Override
     public void tick(float dt) {
+        timeSinceLastShot += dt;
+        if(!shots.isEmpty()) {
+            ListIterator it = shots.listIterator();
+            while(it.hasNext()) {
+                Projectile shot = (Projectile)it.next();
+                if(shot.isDestroyed()) {
+                    it.remove();
+                }
+            }
+        }
         this.position.x += this.velocity.x * dt;
+        this.projectileStart.x += this.velocity.x * dt;
         this.position.y += this.velocity.y * dt;
     }
 
@@ -96,7 +125,7 @@ public class Player extends GameEntity implements KeyboardHandler {
     public Rect2 getBounds() {
         return new Rect2(this.position,
                 new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
-                        this.position.y + this.mTexture.getHeight() * this.scale.y));
+                        this.position.y - this.mTexture.getHeight() * this.scale.y));
     }
 
     @Override
@@ -107,7 +136,7 @@ public class Player extends GameEntity implements KeyboardHandler {
     @Override
     public void handle(InputEvent event) {
         final int keyCode = event.getKeyCode();
-        if(keyCode == fireKey) {
+        if(keyCode == fireKey && event.isPressed()) {
             fire();
             event.consume();
         }

@@ -2,20 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b89365eb-8cd7-4217-b3b5-6a2b982e213b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/player.png" afterPath="$PROJECT_DIR$/res/player.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java" afterPath="$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/GameEntity.java" afterPath="$PROJECT_DIR$/src/main/GameEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java" afterPath="$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java" afterPath="$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/gameimpl/Player.java" afterPath="$PROJECT_DIR$/src/main/gameimpl/Player.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/gameimpl/Projectile.java" afterPath="$PROJECT_DIR$/src/main/gameimpl/Projectile.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/stuff/Rect2.java" afterPath="$PROJECT_DIR$/src/stuff/Rect2.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/texture/SimpleTexture.java" afterPath="$PROJECT_DIR$/src/main/texture/SimpleTexture.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java" afterPath="$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="cmsc425-semesterproj.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Game.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360913734456" ignored="false" />
-    <file path="/fragment.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360909724157" ignored="false" />
+    <file path="/fragment.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360963087767" ignored="false" />
     <file path="/Bus.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359049068173" ignored="false" />
     <file path="/EventStream.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359261106181" ignored="false" />
     <file path="/TickBus.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359050202562" ignored="false" />
@@ -28,7 +27,7 @@
     <file path="/Main.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359269170006" ignored="false" />
     <file path="$PROJECT_DIR$/../JBacon/src/jbacon/examples/TickStreamable.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359159489962" ignored="false" />
     <file path="/TickStreamable.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359159488404" ignored="false" />
-    <file path="/Dummy.txt" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360909124392" ignored="false" />
+    <file path="/Dummy.txt" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360964177409" ignored="false" />
     <file path="$PROJECT_DIR$/../JBacon/src/jbacon/JBacon.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359269518179" ignored="false" />
     <file path="$PROJECT_DIR$/../JBacon/.gitignore" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359165577509" ignored="false" />
     <file path="/.gitignore" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360906155523" ignored="false" />
@@ -48,7 +47,7 @@
     <file path="/F1.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359236415747" ignored="false" />
     <file path="$PROJECT_DIR$/../JBacon/README.md" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1359270783051" ignored="false" />
     <file path="/KeyboardHandler.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360429498565" ignored="false" />
-    <file path="/GameEntity.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360954292778" ignored="false" />
+    <file path="/GameEntity.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360977216737" ignored="false" />
     <file path="/Texture.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360904844239" ignored="false" />
     <file path="/AnimatedTexture.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360907314236" ignored="false" />
     <file path="/AutoFindTileMapLoader.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360907182731" ignored="false" />
@@ -64,15 +63,19 @@
     <file path="/BasicTileMapLoader.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360907372432" ignored="false" />
     <file path="/a.py" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360625028171" ignored="false" />
     <file path="/Volumes/Arcode Dev/inky-core/inky" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360625156130" ignored="false" />
-    <file path="/SpaceInvaders.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360953726054" ignored="false" />
+    <file path="/SpaceInvaders.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360976603050" ignored="false" />
     <file path="/GameRunnable.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360906831958" ignored="false" />
     <file path="/InvadersLevel.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360910485159" ignored="false" />
-    <file path="/InvaderLevel1.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360912758682" ignored="false" />
-    <file path="/InvaderEnemy.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360914585068" ignored="false" />
-    <file path="/Rect2.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360954092750" ignored="false" />
-    <file path="/Player.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360954631941" ignored="false" />
+    <file path="/InvaderLevel1.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360975990584" ignored="false" />
+    <file path="/InvaderEnemy.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360975787042" ignored="false" />
+    <file path="/Rect2.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360976781209" ignored="false" />
+    <file path="/Player.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360975261492" ignored="false" />
     <file path="/InvaderProjectile.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360961539079" ignored="false" />
-    <file path="/Projectile.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360912963037" ignored="false" />
+    <file path="/Projectile.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360977231861" ignored="false" />
+    <file path="$PROJECT_DIR$/../Tanks/tanks/src/game/TestSandbox.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360963543297" ignored="false" />
+    <file path="/TestSandbox.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360963541727" ignored="false" />
+    <file path="$PROJECT_DIR$/../Tanks/tanks/src/jme3test/helloworld/Teapot1.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360965480417" ignored="false" />
+    <file path="/Teapot1.java" changelist="b89365eb-8cd7-4217-b3b5-6a2b982e213b" time="1360965425142" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,6 +90,7 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
+    <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
@@ -122,22 +126,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
-    <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/GameEntity.java" line="111" class="main.GameEntity" package="main">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
-    </line_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -150,9 +138,10 @@
       <file leaf-file-name="SpaceInvaders.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="62" column="79" selection-start="1728" selection-end="1728" vertical-scroll-proportion="0.0">
+            <state line="93" column="36" selection-start="2768" selection-end="2768" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="e#1783#2100#0" expanded="true" />
+                <element signature="e#2089#2090#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -161,18 +150,7 @@
       <file leaf-file-name="BasicTextureLoader.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="69" selection-start="4487" selection-end="4487" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InputHandler.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/handlers/InputHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="8" selection-start="734" selection-end="734" vertical-scroll-proportion="0.0">
+            <state line="123" column="32" selection-start="5145" selection-end="5145" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -181,10 +159,8 @@
       <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="38" column="0" selection-start="1173" selection-end="1173" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="116" column="4" selection-start="3926" selection-end="3926" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -192,11 +168,8 @@
       <file leaf-file-name="GameEntity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/GameEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="75" column="84" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="e#519#531#0" expanded="true" />
-                <element signature="e#629#660#0" expanded="true" />
-              </folding>
+            <state line="91" column="84" selection-start="3954" selection-end="3954" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -204,36 +177,34 @@
       <file leaf-file-name="Rect2.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/stuff/Rect2.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="63" selection-start="946" selection-end="946" vertical-scroll-proportion="0.0">
+            <state line="33" column="36" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Projectile.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Projectile.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Projectile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="40" column="89" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Texture.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/texture/Texture.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="24" column="28" selection-start="674" selection-end="674" vertical-scroll-proportion="0.0">
+            <state line="81" column="25" selection-start="2448" selection-end="2448" vertical-scroll-proportion="0.5234708">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleTexture.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="SimpleTexture.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/texture/SimpleTexture.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="128" column="26" selection-start="2889" selection-end="2889" vertical-scroll-proportion="0.75106686">
+            <state line="132" column="0" selection-start="2966" selection-end="2966" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TextureManager.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/texture/TextureManager.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="142" column="25" selection-start="5126" selection-end="5126" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -242,9 +213,19 @@
       <file leaf-file-name="InvaderEnemy.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="1129" selection-end="1129" vertical-scroll-proportion="0.0">
+            <state line="92" column="40" selection-start="2682" selection-end="2682" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="InvaderLevel1.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="20" column="22" selection-start="464" selection-end="464" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#722#736#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -271,19 +252,19 @@
         <option value="$PROJECT_DIR$/src/main/texture/BasicTileMapLoader.java" />
         <option value="$PROJECT_DIR$/src/main/texture/Texture.java" />
         <option value="$PROJECT_DIR$/src/main/gameimpl/InvadersLevel.java" />
-        <option value="$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java" />
         <option value="$PROJECT_DIR$/src/main/gameimpl/InvaderProjectile.java" />
         <option value="$PROJECT_DIR$/src/main/texture/TextureManager.java" />
         <option value="$PROJECT_DIR$/src/main/Game.java" />
-        <option value="$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java" />
         <option value="$PROJECT_DIR$/src/handlers/InputHandler.java" />
         <option value="$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java" />
-        <option value="$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java" />
-        <option value="$PROJECT_DIR$/src/stuff/Rect2.java" />
-        <option value="$PROJECT_DIR$/src/main/GameEntity.java" />
-        <option value="$PROJECT_DIR$/src/main/gameimpl/Player.java" />
-        <option value="$PROJECT_DIR$/src/main/gameimpl/Projectile.java" />
         <option value="$PROJECT_DIR$/src/main/texture/SimpleTexture.java" />
+        <option value="$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java" />
+        <option value="$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java" />
+        <option value="$PROJECT_DIR$/src/main/gameimpl/Player.java" />
+        <option value="$PROJECT_DIR$/src/stuff/Rect2.java" />
+        <option value="$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java" />
+        <option value="$PROJECT_DIR$/src/main/GameEntity.java" />
+        <option value="$PROJECT_DIR$/src/main/gameimpl/Projectile.java" />
       </list>
     </option>
   </component>
@@ -454,8 +435,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -617,7 +598,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1440" height="874" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32891247" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -625,7 +606,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.276901" sideWeight="0.6710875" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.28550932" sideWeight="0.6710875" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39920425" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32804233" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
@@ -730,89 +711,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="59" selection-start="1476" selection-end="1476" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#583#597#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/texture/TextureManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="25" selection-start="1819" selection-end="1819" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/handlers/InputHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="30" column="8" selection-start="734" selection-end="734" vertical-scroll-proportion="0.0">
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="69" selection-start="4487" selection-end="4487" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1129" selection-end="1129" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/stuff/Rect2.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="63" selection-start="946" selection-end="946" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="62" column="79" selection-start="1728" selection-end="1728" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/GameEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="75" column="84" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#519#531#0" expanded="true" />
-            <element signature="e#629#660#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="38" column="0" selection-start="1173" selection-end="1173" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Projectile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="89" selection-start="1292" selection-end="1292" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -825,7 +727,76 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/texture/SimpleTexture.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="128" column="26" selection-start="2889" selection-end="2889" vertical-scroll-proportion="0.75106686">
+        <state line="132" column="0" selection-start="2966" selection-end="2966" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/texture/TextureManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="142" column="25" selection-start="5126" selection-end="5126" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/texture/BasicTextureLoader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="123" column="32" selection-start="5145" selection-end="5145" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/SpaceInvaders.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="36" selection-start="2768" selection-end="2768" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#1783#2100#0" expanded="true" />
+            <element signature="e#2089#2090#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderEnemy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="40" selection-start="2682" selection-end="2682" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="116" column="4" selection-start="3926" selection-end="3926" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/stuff/Rect2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="36" selection-start="729" selection-end="729" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/InvaderLevel1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="20" column="22" selection-start="464" selection-end="464" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#722#736#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/GameEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="91" column="84" selection-start="3954" selection-end="3954" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/gameimpl/Projectile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="81" column="25" selection-start="2448" selection-end="2448" vertical-scroll-proportion="0.5234708">
           <folding />
         </state>
       </provider>
@@ -859,6 +830,7 @@
       </state>
       <state key="GlobalLibrariesConfigurable.UI">
         <settings>
+          <last-edited>Python 2.7.2 (/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python) interpreter library</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -887,6 +859,7 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

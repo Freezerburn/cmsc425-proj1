@@ -49,7 +49,7 @@ public class SpaceInvaders implements GameRunnable {
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         gluOrtho2D(0, width, 0, height);
-        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     }
 
     @Override
@@ -70,6 +70,7 @@ public class SpaceInvaders implements GameRunnable {
                 }
             }
         });
+        this.levels.get(currentLevel).initInvaders();
     }
 
     @Override
@@ -78,6 +79,18 @@ public class SpaceInvaders implements GameRunnable {
         long lastTime = System.nanoTime();
         while(this.running) {
             totalTicks++;
+            if(levels.get(currentLevel).levelFinished()) {
+                currentLevel++;
+                if(currentLevel == levels.size()) {
+                    endGame(true);
+                }
+                else {
+                    levels.get(currentLevel).initInvaders();
+                }
+            }
+            else if(player.isDestroyed()) {
+                endGame(false);
+            }
             InputHandler.getInstance().update();
 
             glClear(GL_COLOR_BUFFER_BIT);
@@ -91,6 +104,8 @@ public class SpaceInvaders implements GameRunnable {
 //            }
             lastTime = curTime;
             GameEntity.tickAll(delta);
+            levels.get(currentLevel).tick(delta);
+            GameEntity.collideAll();
             GameEntity.renderAll(delta);
 
             Display.update();
@@ -99,5 +114,15 @@ public class SpaceInvaders implements GameRunnable {
                 this.running = false;
             }
         }
+    }
+
+    protected void endGame(boolean won) {
+        if(won) {
+            System.out.println("You win!");
+        }
+        else {
+            System.out.println("You lose!");
+        }
+        System.exit(0);
     }
 }

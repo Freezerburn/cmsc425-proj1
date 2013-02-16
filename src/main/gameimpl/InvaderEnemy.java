@@ -2,6 +2,7 @@ package main.gameimpl;
 
 import main.GameEntity;
 import main.texture.Texture;
+import main.texture.TextureManager;
 import stuff.Rect2;
 import stuff.Vector2;
 
@@ -17,6 +18,7 @@ public class InvaderEnemy extends GameEntity {
     protected static final float BASIC_MOVE_SPEED_RIGHT = 100.0f;
     protected static final float BASIC_MOVE_SPEED_LEFT = -100.0f;
     public static final String ENT_NAME = "invader";
+    public static final String INVADER_TEX = "res/invader.png";
 
     public static final float INVADER_WIDTH = 32.0f;
     public static final float INVADER_HEIGHT = 32.0f;
@@ -26,8 +28,8 @@ public class InvaderEnemy extends GameEntity {
     protected Vector2 position, velocity, scale;
     protected boolean destroyed;
 
-    public InvaderEnemy(Texture tex, float x, float y, boolean movingRight) {
-        super(tex);
+    public InvaderEnemy(float x, float y, boolean movingRight) {
+        super(TextureManager.loadTexture(INVADER_TEX));
         this.position = new Vector2(x, y);
         if(movingRight) {
             this.velocity = new Vector2(BASIC_MOVE_SPEED_RIGHT, 0.0f);
@@ -35,7 +37,7 @@ public class InvaderEnemy extends GameEntity {
         else {
             this.velocity = new Vector2(BASIC_MOVE_SPEED_LEFT, 0.0f);
         }
-        this.scale = new Vector2(INVADER_WIDTH / tex.getWidth(), INVADER_HEIGHT / tex.getHeight());
+        this.scale = new Vector2(INVADER_WIDTH / mTexture.getWidth(), INVADER_HEIGHT / mTexture.getHeight());
         this.destroyed = false;
     }
 
@@ -67,11 +69,15 @@ public class InvaderEnemy extends GameEntity {
 
     @Override
     protected void handleMessage(String message) {
+        String[] parsed = message.split(":");
         if(message.equals(REVERSE_DIRECTION)) {
             this.velocity.x = -this.velocity.x;
         }
         else if(message.equals(FIRE)) {
             this.fire();
+        }
+        else if(parsed[0].equals("collision")) {
+            this.destroy();
         }
     }
 
@@ -84,7 +90,7 @@ public class InvaderEnemy extends GameEntity {
     public Rect2 getBounds() {
         return new Rect2(this.position,
                 new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
-                        this.position.y + this.mTexture.getHeight() * this.scale.y));
+                        this.position.y - this.mTexture.getHeight() * this.scale.y));
     }
 
     @Override

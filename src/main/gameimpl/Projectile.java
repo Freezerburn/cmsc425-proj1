@@ -1,5 +1,6 @@
 package main.gameimpl;
 
+import main.Game;
 import main.GameEntity;
 import main.texture.Texture;
 import main.texture.TextureManager;
@@ -28,9 +29,11 @@ public class Projectile extends GameEntity {
     protected String entName;
 
     protected Vector2 position, velocity, scale;
+    protected boolean destroyed;
 
     public Projectile(float x, float y, boolean goingUp, boolean friendly) {
         super(TextureManager.loadTexture(PROJECTILE_TEX));
+        this.destroyed = false;
         this.position = new Vector2(x, y);
         if(goingUp) {
             this.velocity = new Vector2(0.0f, PROJECTILE_VEL);
@@ -45,6 +48,12 @@ public class Projectile extends GameEntity {
 
     @Override
     public void tick(float dt) {
+        if(this.position.y + PROJECTILE_HEIGHT > Game.windowHeight) {
+            this.destroy();
+        }
+        else if(this.position.y < 0.0f) {
+            this.destroy();
+        }
         this.position.x += this.velocity.x * dt;
         this.position.y += this.velocity.y * dt;
     }
@@ -63,21 +72,27 @@ public class Projectile extends GameEntity {
 
     @Override
     protected void onDestroy() {
+        this.destroyed = true;
     }
 
     @Override
     protected void handleMessage(String message) {
         String[] parsed = message.split(":");
+        if(parsed[0].equals("collision")) {
+            this.destroy();
+        }
     }
 
     @Override
     public boolean isDestroyed() {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
+        return this.destroyed;
     }
 
     @Override
     public Rect2 getBounds() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new Rect2(this.position,
+                new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
+                        this.position.y - this.mTexture.getHeight() * this.scale.y));
     }
 
     @Override

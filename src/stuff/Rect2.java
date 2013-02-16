@@ -31,6 +31,10 @@ public class Rect2 {
     }
 
     public boolean collidesWith(Rect2 other) {
+//        System.out.println("First: 2l:" + other.getLeft() + ", 1r:" + this.getRight());
+//        System.out.println("Second: 2r:" + other.getRight() + ", 1l:" + this.getLeft());
+//        System.out.println("Third: 2t:" + other.getTop() + ", 1b:" + this.getBottom());
+//        System.out.println("Fourth: 2b:" + other.getBottom() + ", 1t:" + this.getTop());
         if(other.getLeft() > this.getRight()) return false;
         else if(other.getRight() < this.getLeft()) return false;
         else if(other.getTop() < this.getBottom()) return false;

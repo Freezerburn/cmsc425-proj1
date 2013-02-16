@@ -14,9 +14,12 @@ import java.util.ListIterator;
  * Time: 1:24 AM
  */
 public class InvaderLevel1 implements InvadersLevel {
-    protected static int rows = 8;
+//    protected static int rows = 1;
+    protected static int rows = 5;
+//    protected static int columns = 1;
     protected static int columns = 8;
-    protected static final float DISTANCE_BETWEEN = 8.0f;
+    protected static final float DISTANCE_BETWEEN_X = 8.0f;
+    protected static final float DISTANCE_BETWEEN_Y = 5.0f;
     protected static final double FIRE_CHANCE = 0.00001;
 
     protected float totalTime = 0.0f;
@@ -26,7 +29,10 @@ public class InvaderLevel1 implements InvadersLevel {
     public void initInvaders() {
         for(int y = 0; y < rows; y++) {
             for(int x = 0; x < columns; x++) {
-                InvaderEnemy invader = new InvaderEnemy(null, 0.0f, 0.0f, true);
+                InvaderEnemy invader = new InvaderEnemy(3.0f + x * (DISTANCE_BETWEEN_X + InvaderEnemy.INVADER_WIDTH),
+                        Game.windowHeight - 3.0f - InvaderEnemy.INVADER_HEIGHT - y * (DISTANCE_BETWEEN_Y + InvaderEnemy.INVADER_HEIGHT) ,
+                        true);
+                invaders.push(invader);
             }
         }
     }
