@@ -1,5 +1,8 @@
 package main.texture;
 
+import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,8 +13,8 @@ import java.util.Map;
  * Time: 5:57 PM
  */
 public class TextureManager {
-    private static final Map<String, SimpleTexture> mTextureMap = new HashMap<String, SimpleTexture>();
-    private static final Map<String, SimpleTexture[]> mTextureTileMap = new HashMap<String, SimpleTexture[]>();
+    private static final Map<String, Texture> mTextureMap = new HashMap<String, Texture>();
+    private static final Map<String, Texture[]> mTextureTileMap = new HashMap<String, Texture[]>();
 
     public static void removeTexture(String name) {
         if(mTextureMap.containsKey(name)) {
@@ -24,7 +27,7 @@ public class TextureManager {
     }
 
     public static void renameTexture(String oldName, String newName) {
-        SimpleTexture toRename = mTextureMap.get(oldName);
+        Texture toRename = mTextureMap.get(oldName);
         mTextureMap.remove(oldName);
         mTextureMap.put(newName, toRename);
     }
@@ -39,6 +42,65 @@ public class TextureManager {
 
     public static Texture getTileFromMap(String name, int x, int y) {
         return mTextureMap.get(name + "_" + x + "," + y);
+    }
+
+    public static Texture fromBufferedImage(BufferedImage image, String name) {
+        if(mTextureMap.containsKey(name)) {
+            Texture ret = mTextureMap.get(name);
+            ret.alloc();
+            return ret;
+        }
+
+        BasicTextureLoader loader = new BasicTextureLoader(name, false);
+        loader.image = image;
+        loader.run();
+        mTextureMap.put(name, loader.texture);
+        return loader.texture;
+    }
+
+    public static Texture fromString(String text) {
+        return fromString(text, text);
+    }
+
+    public static Texture fromString(String text, String name) {
+
+        for(char aChar : text.toCharArray()) {
+
+        }
+        return null;
+    }
+
+    public static Texture fromChar(char theChar, String name) {
+        if(mTextureMap.containsKey(name)) {
+            Texture ret = mTextureMap.get(name);
+            ret.alloc();
+            return ret;
+        }
+
+        char[] charData = new char[]{theChar};
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+        BufferedImage temp = gc.createCompatibleImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = temp.createGraphics();
+        Rectangle2D r = font.getStringBounds(charData, 0, 1, g.getFontRenderContext());
+        g.dispose();
+
+        temp = gc.createCompatibleImage(Math.max((int)Math.ceil(r.getWidth()), 1),
+                (int)Math.round(r.getHeight() * 1.25),
+                BufferedImage.TYPE_INT_ARGB);
+        g = temp.createGraphics();
+        g.setColor(Color.BLACK);
+        g.setFont(font);
+        g.drawChars(charData, 0, 1, 0, (int)Math.floor(r.getHeight()));
+        g.dispose();
+        BasicTextureLoader loader = new BasicTextureLoader(name, false);
+        loader.image = temp;
+        loader.run();
+        mTextureMap.put(name, loader.texture);
+        return loader.texture;
     }
 
     public static Texture loadTexture(String file) {

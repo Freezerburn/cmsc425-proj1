@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
  * Date: 2/15/13
  * Time: 2:21 AM
  */
-public class Projectile extends GameEntity {
+public class Projectile extends BaseEntity {
     public static final String ENT_NAME = "projectile";
     public static final String HOSTILE = "no";
     public static final String FRIENDLY = "yes";
@@ -28,21 +28,18 @@ public class Projectile extends GameEntity {
     protected boolean friendly;
     protected String entName;
 
-    protected Vector2 position, velocity, scale;
-    protected boolean destroyed;
-
     public Projectile(float x, float y, boolean goingUp, boolean friendly) {
-        super(TextureManager.loadTexture(PROJECTILE_TEX));
-        this.destroyed = false;
-        this.position = new Vector2(x, y);
+        super(TextureManager.loadTexture(PROJECTILE_TEX), "none", x, y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
         if(goingUp) {
-            this.velocity = new Vector2(0.0f, PROJECTILE_VEL);
+            this.velocity.y = PROJECTILE_VEL;
         }
         else {
-            this.velocity = new Vector2(0.0f, -PROJECTILE_VEL);
+            this.velocity.y = -PROJECTILE_VEL;
         }
-        this.scale = new Vector2(PROJECTILE_WIDTH / mTexture.getWidth(), PROJECTILE_HEIGHT / mTexture.getHeight());
         this.friendly = friendly;
+        if(!friendly) {
+            this.velocity.y /= 2.0f;
+        }
         this.entName = ENT_NAME + ":" +  (friendly ? FRIENDLY : HOSTILE);
     }
 
@@ -98,5 +95,20 @@ public class Projectile extends GameEntity {
     @Override
     public String getEntName() {
         return entName;
+    }
+
+    @Override
+    public String getCollisionType() {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onContextEnter() {
+        //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    protected void onContextLeave() {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

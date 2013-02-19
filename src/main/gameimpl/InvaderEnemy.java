@@ -14,34 +14,33 @@ import static org.lwjgl.opengl.GL11.*;
  * Date: 2/15/13
  * Time: 1:26 AM
  */
-public class InvaderEnemy extends GameEntity {
+public class InvaderEnemy extends BaseEntity {
     protected static final float BASIC_MOVE_SPEED_RIGHT = 100.0f;
     protected static final float BASIC_MOVE_SPEED_LEFT = -100.0f;
+    protected static final float DOWNWARD_MOVEMENT = 10.0f;
     public static final String ENT_NAME = "invader";
     public static final String INVADER_TEX = "res/invader.png";
+    public static final String COLLISION_TYPE = "enemy";
 
-    public static final float INVADER_WIDTH = 32.0f;
-    public static final float INVADER_HEIGHT = 32.0f;
+    public static final float INVADER_WIDTH = 35.0f;
+    public static final float INVADER_HEIGHT = 35.0f;
     public static final String REVERSE_DIRECTION = "reverse";
     public static final String FIRE = "fire";
 
-    protected Vector2 position, velocity, scale;
-    protected boolean destroyed;
-
     public InvaderEnemy(float x, float y, boolean movingRight) {
-        super(TextureManager.loadTexture(INVADER_TEX));
-        this.position = new Vector2(x, y);
+        super(TextureManager.loadTexture(INVADER_TEX), "none", x, y, INVADER_WIDTH, INVADER_HEIGHT);
         if(movingRight) {
-            this.velocity = new Vector2(BASIC_MOVE_SPEED_RIGHT, 0.0f);
+            this.velocity.x = BASIC_MOVE_SPEED_RIGHT;
         }
         else {
-            this.velocity = new Vector2(BASIC_MOVE_SPEED_LEFT, 0.0f);
+            this.velocity.x = BASIC_MOVE_SPEED_LEFT;
         }
-        this.scale = new Vector2(INVADER_WIDTH / mTexture.getWidth(), INVADER_HEIGHT / mTexture.getHeight());
-        this.destroyed = false;
     }
 
     private void fire() {
+        new Projectile(position.x + mTexture.getWidth() * scale.x / 2.0f - Projectile.PROJECTILE_WIDTH / 2.0f,
+                position.y - (mTexture.getHeight() * scale.y) + 17.0f,
+                false, false);
     }
 
     @Override
@@ -71,7 +70,9 @@ public class InvaderEnemy extends GameEntity {
     protected void handleMessage(String message) {
         String[] parsed = message.split(":");
         if(message.equals(REVERSE_DIRECTION)) {
+            this.position.x -= this.velocity.x * 0.07;
             this.velocity.x = -this.velocity.x;
+            this.position.y -= DOWNWARD_MOVEMENT;
         }
         else if(message.equals(FIRE)) {
             this.fire();
@@ -96,5 +97,18 @@ public class InvaderEnemy extends GameEntity {
     @Override
     public String getEntName() {
         return ENT_NAME;
+    }
+
+    @Override
+    public String getCollisionType() {
+        return COLLISION_TYPE;
+    }
+
+    @Override
+    protected void onContextEnter() {
+    }
+
+    @Override
+    protected void onContextLeave() {
     }
 }

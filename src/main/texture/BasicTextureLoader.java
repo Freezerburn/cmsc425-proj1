@@ -25,6 +25,16 @@ public class BasicTextureLoader implements Runnable {
     protected String mFile, managerHandle;
     protected boolean mShouldRemoveBackground, mKeepBufferedImage;
 
+    public BasicTextureLoader(String managerHandle, boolean shouldRemoveBackground) {
+        mFile = null;
+        this.managerHandle = managerHandle;
+        this.texture = null;
+        this.width = 0;
+        this.height = 0;
+        this.mShouldRemoveBackground = shouldRemoveBackground;
+        this.mKeepBufferedImage = false;
+    }
+
     public BasicTextureLoader(String file, String managerHandle, boolean shouldRemoveBackground) {
         mFile = file;
         this.managerHandle = managerHandle;
@@ -130,13 +140,18 @@ public class BasicTextureLoader implements Runnable {
 
     @Override
     public void run() {
-        texture = new SimpleTexture(GL_TEXTURE_2D, genTexture(mFile), managerHandle);
+        if(mFile == null) {
+            texture = new SimpleTexture(GL_TEXTURE_2D, genTextureFromBufferedImage(image), managerHandle);
+        }
+        else {
+            texture = new SimpleTexture(GL_TEXTURE_2D, genTexture(mFile), managerHandle);
+        }
         if (!mKeepBufferedImage) {
             image.flush();
             image = null;
         }
         texture.setWidth(width);
         texture.setHeight(height);
-        System.out.println(width + ", " + height + ", " + texture.getName());
+//        System.out.println(width + ", " + height + ", " + texture.getName());
     }
 }

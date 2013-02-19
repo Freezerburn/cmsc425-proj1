@@ -20,9 +20,11 @@ public class InvaderLevel1 implements InvadersLevel {
     protected static int columns = 8;
     protected static final float DISTANCE_BETWEEN_X = 8.0f;
     protected static final float DISTANCE_BETWEEN_Y = 5.0f;
-    protected static final double FIRE_CHANCE = 0.00001;
+    protected static final double FIRE_CHANCE = 0.5;
+    protected static final float TIME_BETWEEN_SHOTS = 0.15f;
 
     protected float totalTime = 0.0f;
+    protected float lastShot = TIME_BETWEEN_SHOTS;
     protected LinkedList<InvaderEnemy> invaders = new LinkedList<InvaderEnemy>();
 
     @Override
@@ -45,9 +47,11 @@ public class InvaderLevel1 implements InvadersLevel {
     @Override
     public void tick(float dt) {
         this.totalTime += dt;
+        this.lastShot += dt;
 
         boolean shouldReverse = false;
         ListIterator it = invaders.listIterator();
+        boolean fired = false;
         while(it.hasNext()) {
             InvaderEnemy invader = (InvaderEnemy)it.next();
             if(invader.isDestroyed()) {
@@ -55,7 +59,9 @@ public class InvaderLevel1 implements InvadersLevel {
             }
             else {
                 Rect2 bounds = invader.getBounds();
-                if(Utils.random.nextGaussian() < FIRE_CHANCE) {
+                double rand = Math.abs(Utils.random.nextGaussian()) * 1000.0;
+                if(lastShot > TIME_BETWEEN_SHOTS && rand < FIRE_CHANCE) {
+                    fired = true;
                     invader.handleMessage(InvaderEnemy.FIRE);
                 }
                 if(bounds.getLeft() <= 0.0f) {
@@ -67,6 +73,9 @@ public class InvaderLevel1 implements InvadersLevel {
                     break;
                 }
             }
+        }
+        if(fired) {
+            lastShot = 0.0f;
         }
         if(shouldReverse) {
             for(InvaderEnemy invader : invaders) {

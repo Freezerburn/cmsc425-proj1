@@ -86,10 +86,10 @@ public class AutoFindTileMapLoader implements TileMapLoader {
                         int width = found.two.x - found.one.x;
                         int height = found.two.y - found.one.y;
                         Vector2 loc = new Vector2(found.one.x / (float) imageWidth, found.one.y / (float) imageHeight);
-                        Vector2 size = new Vector2(width / (double) imageWidth,
-                                width / (double) imageHeight);
+                        Vector2 size = new Vector2(width / imageWidth,
+                                width / imageHeight);
                         ret.add(new ThreeTuple<Vector2, Vector2, Vector2>(loc, size,
-                                new Vector2((double) width, (double) height)));
+                                new Vector2(width, height)));
                     }
                     searched[x][y] = true;
                 }

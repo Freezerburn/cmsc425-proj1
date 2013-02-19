@@ -51,12 +51,15 @@ public class SimpleTexture extends Texture {
     @Override
     public void alloc() {
         refCount += 1;
+//        System.out.println("Texture " + getName() + " at " + refCount + " refs");
     }
 
     @Override
     public void destroy() {
         refCount -=1;
+//        System.out.println("Texture " + getName() + " at " + refCount + " refs");
         if(refCount == 0) {
+//            System.out.println("Destroying texture: " + this.mName);
             TextureManager.removeTexture(managerHandle);
             GL11.glDeleteTextures(this.mName);
         }

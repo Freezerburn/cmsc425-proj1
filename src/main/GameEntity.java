@@ -7,9 +7,7 @@ import main.texture.Texture;
 import stuff.Rect2;
 import stuff.TwoTuple;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
+import java.util.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -21,7 +19,11 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public abstract class GameEntity {
     protected static long nextUid = 0;
+    public static final String FIRST_CONTEXT = "start";
+    public static final String COLLISION_NONE = "none";
+    protected static String currentContext = FIRST_CONTEXT;
     protected static LinkedList<GameEntity> allEntities = new LinkedList<GameEntity>();
+    protected static HashMap<Long, LinkedList<GameEntity>> layers = new HashMap<Long, LinkedList<GameEntity>>();
     protected static LinkedList<TwoTuple<Boolean, GameEntity>> addRemoveLater = new LinkedList<TwoTuple<Boolean, GameEntity>>();
     private static Comparator<TwoTuple<Boolean,GameEntity>> twoTupleComparator =
             new Comparator<TwoTuple<Boolean, GameEntity>>() {
@@ -45,25 +47,29 @@ public abstract class GameEntity {
     }
 
     public static void tickAll(float dt) {
-        // Theoretically should be faster due to fewer cache misses. At least according to a
-        // StackOverflow thread I once read:
-        // http://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-an-unsorted-array
-        Collections.sort(addRemoveLater, twoTupleComparator);
-        for(TwoTuple<Boolean, GameEntity> tt : addRemoveLater) {
-            if(tt.one) {
-                allEntities.remove(tt.two);
-            }
-            else {
-                allEntities.add(tt.two);
-            }
-        }
-        addRemoveLater.clear();
-
         for(GameEntity ge : allEntities) {
             ge.tick(dt);
         }
     }
 
+    /**
+     * The hacky as all heck collision detection. This is almost a brute force solution, but culling
+     * out certain possibilities in order to keep it from being N^2... sort of. Only attempts collision
+     * on things that certain GameEntities can actually collide with. e.g. a projectile that is friendly
+     * to the player will not try to collide with the player, or a projectile that is hostile will not
+     * try to collide with the invaders, etc. Works well enough on my computer, but I do have an i7,
+     * so your mileage mary vary.<br/>
+     *
+     * The only collision detection this does entirely relies upon intersecting rectangles. Once something
+     * has been found to collide with something else, a message is sent to GameEntity notifying it of
+     * the collision, and it can act appropriately from there. (e.g. an invader dying, your ship losing
+     * health, etc.) <br/>
+     *
+     * Unfortunately in my haste to put together a collision detection scheme, I went a route that isn't
+     * really extensible and relies on nested ifs. I'll create a better scheme for another project, or
+     * later on for this one given enough time. (I'll eventually get a QuadTree/OcTree put together for
+     * actually fast detection)
+     */
     public static void collideAll() {
         for(GameEntity ge : allEntities) {
 //            System.out.println(ge.getEntName() + ", " + Projectile.ENT_NAME);
@@ -78,6 +84,7 @@ public abstract class GameEntity {
                             boolean colliding = projectileBounds.collidesWith(playerBounds);
 //                            System.out.println("Found hostile bullet. Colliding: " + colliding);
                             if(colliding) {
+                                ge.handleMessage("collision:" + other_ge.getEntName());
                                 other_ge.handleMessage("collision:" + ge.getEntName());
                             }
                         }
@@ -95,25 +102,77 @@ public abstract class GameEntity {
                     }
                 }
             }
+            else if(ge.getEntName().startsWith(InvaderEnemy.ENT_NAME)) {
+
+            }
         }
     }
 
     public static void renderAll(float dt) {
-        for(GameEntity ge : allEntities) {
-            ge.preRender(dt);
-            ge.render(dt);
-            ge.postRender(dt);
+        // Theoretically should be faster due to fewer cache misses. At least according to a
+        // StackOverflow thread I once read:
+        // http://stackoverflow.com/questions/11227809/why-is-processing-a-sorted-array-faster-than-an-unsorted-array
+        //
+        // Also the adds/removes are done here because they are all going to happen in the tick phase
+        // of entity processing, and we want to make sure there are no "ghosts" rendered of entities that
+        // have actually been removed but aren't in our tracked lists yet.
+        Collections.sort(addRemoveLater, twoTupleComparator);
+        for(TwoTuple<Boolean, GameEntity> tt : addRemoveLater) {
+            if(tt.one) {
+                allEntities.remove(tt.two);
+                layers.get(tt.two.getLayer()).remove(tt.two);
+            }
+            else {
+                allEntities.add(tt.two);
+                if(!layers.containsKey(tt.two.getLayer())) {
+                    layers.put(tt.two.getLayer(), new LinkedList<GameEntity>());
+                }
+                layers.get(tt.two.getLayer()).push(tt.two);
+            }
         }
+        addRemoveLater.clear();
+
+        Set<Long> keySet = layers.keySet();
+        Long[] layerKeys = new Long[keySet.size()];
+        keySet.toArray(layerKeys);
+
+        Arrays.sort(layerKeys);
+        for(Long layer : layerKeys) {
+            for(GameEntity ge : layers.get(layer)) {
+                ge.preRender(dt);
+                ge.render(dt);
+                ge.postRender(dt);
+            }
+        }
+    }
+
+    public static void destroyAll() {
+        for(GameEntity ge : allEntities) {
+            ge.destroy();
+        }
+        allEntities.clear();
+        layers.clear();
+        addRemoveLater.clear();
+    }
+
+    public static void switchContext(String context) {
     }
 
     /* ==== END OF STATIC STUFF ==== */
 
     private long uid = nextUid++;
+    protected long layer;
     protected Texture mTexture;
+    protected String context;
 
-    public GameEntity(Texture tex) {
+    public GameEntity(Texture tex, String context) {
         this.mTexture = tex;
+        this.layer = 0;
+        this.context = context;
         GameEntity.addEntity(this);
+        if(context.equals(currentContext)) {
+            onContextEnter();
+        }
     }
 
     public abstract void tick(float dt);
@@ -144,6 +203,7 @@ public abstract class GameEntity {
     }
 
     public final void destroy() {
+        mTexture.destroy();
         GameEntity.destroyEntity(this);
         onDestroy();
     }
@@ -154,8 +214,19 @@ public abstract class GameEntity {
     public abstract boolean isDestroyed();
     public abstract Rect2 getBounds();
     public abstract String getEntName();
+    public abstract String getCollisionType();
+    protected abstract void onContextEnter();
+    protected abstract void onContextLeave();
+
+    public long getLayer() {
+        return layer;
+    }
 
     public long getUid() {
         return this.uid;
+    }
+
+    public String getContext() {
+        return context;
     }
 }

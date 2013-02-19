@@ -6,5 +6,5 @@ package main.texture;
  * Time: $(TIME}
  */
 public interface TextureLoader extends Runnable {
-    public SimpleTexture get();
+    public Texture get();
 }

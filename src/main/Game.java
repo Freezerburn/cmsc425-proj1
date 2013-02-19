@@ -7,10 +7,10 @@ import main.gameimpl.SpaceInvaders;
 import main.texture.TextureManager;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-import org.lwjgl.opengl.OpenGLException;
+import org.lwjgl.opengl.*;
 import stuff.Preferences;
+
+import javax.swing.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.util.glu.GLU.gluOrtho2D;
@@ -113,7 +113,13 @@ public class Game implements GameRunnable {
         }
         Display.setDisplayMode(new DisplayMode(width, height));
 
+//        PixelFormat pixelFormat = new PixelFormat();
+//        ContextAttribs contextAttribs = new ContextAttribs(3, 2)
+//                .withForwardCompatible(true)
+//                .withProfileCore(true);
+//        Display.create(pixelFormat, contextAttribs);
         Display.create();
+        System.out.println("OpenGL Version: " + glGetString(GL_VERSION));
         Display.processMessages();
         windowWidth = width;
         windowHeight = height;

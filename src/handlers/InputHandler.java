@@ -14,6 +14,8 @@ import java.util.LinkedList;
 public class InputHandler {
     private static InputHandler instance;
     private LinkedList<KeyboardHandler> listeners = new LinkedList<KeyboardHandler>();
+    private LinkedList<KeyboardHandler> removeLater = new LinkedList<KeyboardHandler>();
+    private LinkedList<KeyboardHandler> addLater = new LinkedList<KeyboardHandler>();
 
     private InputHandler() {
         try {
@@ -33,14 +35,22 @@ public class InputHandler {
     }
 
     public void subscribe(KeyboardHandler handler) {
-        this.listeners.push(handler);
+        addLater.push(handler);
     }
 
     public void unsubscribe(KeyboardHandler handler) {
-        this.listeners.remove(handler);
+        removeLater.push(handler);
     }
 
     public void update() {
+        for(KeyboardHandler kh : removeLater) {
+            listeners.remove(kh);
+        }
+        removeLater.clear();
+        for(KeyboardHandler kh : addLater) {
+            listeners.add(kh);
+        }
+        addLater.clear();
         Keyboard.poll();
         while(Keyboard.next()) {
             int keyCode = Keyboard.getEventKey();
