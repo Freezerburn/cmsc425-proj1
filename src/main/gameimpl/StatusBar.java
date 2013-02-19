@@ -1,15 +1,8 @@
 package main.gameimpl;
 
 import main.Game;
-import main.GameEntity;
-import main.texture.Texture;
-import main.texture.TextureManager;
-import stuff.Rect2;
-import stuff.Vector2;
 
 import java.util.LinkedList;
-
-import static org.lwjgl.opengl.GL11.*;
 
 /**
  * Created with IntelliJ IDEA.

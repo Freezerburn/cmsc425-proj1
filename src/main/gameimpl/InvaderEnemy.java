@@ -1,7 +1,5 @@
 package main.gameimpl;
 
-import main.GameEntity;
-import main.texture.Texture;
 import main.texture.TextureManager;
 import stuff.Rect2;
 import stuff.Vector2;
@@ -38,8 +36,8 @@ public class InvaderEnemy extends BaseEntity {
     }
 
     private void fire() {
-        new Projectile(position.x + mTexture.getWidth() * scale.x / 2.0f - Projectile.PROJECTILE_WIDTH / 2.0f,
-                position.y - (mTexture.getHeight() * scale.y) + 17.0f,
+        new Projectile(position.x + mTextures[cur].getWidth() * scale.x / 2.0f - Projectile.PROJECTILE_WIDTH / 2.0f,
+                position.y - (mTextures[cur].getHeight() * scale.y) + 17.0f,
                 false, false);
     }
 
@@ -53,7 +51,7 @@ public class InvaderEnemy extends BaseEntity {
     public void preRender(float dt) {
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
-        glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
+        glScalef(mTextures[cur].getWidth() * this.scale.x, mTextures[cur].getHeight() * this.scale.y, 0.0f);
     }
 
     @Override
@@ -90,8 +88,8 @@ public class InvaderEnemy extends BaseEntity {
     @Override
     public Rect2 getBounds() {
         return new Rect2(this.position,
-                new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
-                        this.position.y - this.mTexture.getHeight() * this.scale.y));
+                new Vector2(this.position.x + this.mTextures[cur].getWidth() * this.scale.x,
+                        this.position.y - this.mTextures[cur].getHeight() * this.scale.y));
     }
 
     @Override

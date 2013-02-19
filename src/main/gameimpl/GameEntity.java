@@ -1,8 +1,5 @@
-package main;
+package main.gameimpl;
 
-import main.gameimpl.InvaderEnemy;
-import main.gameimpl.Player;
-import main.gameimpl.Projectile;
 import main.texture.Texture;
 import stuff.Rect2;
 import stuff.TwoTuple;
@@ -38,11 +35,11 @@ public abstract class GameEntity {
                 }
             };
 
-    private static void destroyEntity(GameEntity ge) {
+    public static void removeEntity(GameEntity ge) {
         addRemoveLater.push(new TwoTuple<Boolean, GameEntity>(true, ge));
     }
 
-    private static void addEntity(GameEntity ge) {
+    public static void addEntity(GameEntity ge) {
         addRemoveLater.push(new TwoTuple<Boolean, GameEntity>(false, ge));
     }
 
@@ -162,11 +159,24 @@ public abstract class GameEntity {
 
     private long uid = nextUid++;
     protected long layer;
-    protected Texture mTexture;
+    protected Texture[] mTextures;
+    protected int cur;
     protected String context;
 
-    public GameEntity(Texture tex, String context) {
-        this.mTexture = tex;
+    protected GameEntity(Texture tex, String context) {
+        this.mTextures = new Texture[]{tex};
+        this.cur = 0;
+        this.layer = 0;
+        this.context = context;
+        GameEntity.addEntity(this);
+        if(context.equals(currentContext)) {
+            onContextEnter();
+        }
+    }
+
+    protected GameEntity(Texture[] tex, String context) {
+        this.mTextures = tex;
+        this.cur = 0;
         this.layer = 0;
         this.context = context;
         GameEntity.addEntity(this);
@@ -181,30 +191,30 @@ public abstract class GameEntity {
     public abstract void postRender(float dt);
 
     public void render(float dt) {
-        mTexture.bind(dt);
-//        glPushMatrix();
-//        glScalef(mTexture.getWidth(), mTexture.getHeight(), 0.0f);
+        Texture tex = mTextures[cur];
+        tex.bind(dt);
         glBegin(GL_QUADS);
             glColor3d(1.0, 1.0, 1.0);
 
-            glTexCoord2d(mTexture.getTexTopRightX(), mTexture.getTexTopRightY()); // top right
+            glTexCoord2d(tex.getTexTopRightX(), tex.getTexTopRightY()); // top right
             glVertex2f(1.0f, 0.0f); // bottom right
 
-            glTexCoord2d(mTexture.getTexTopLeftX(), mTexture.getTexTopLeftY()); // top left
+            glTexCoord2d(tex.getTexTopLeftX(), tex.getTexTopLeftY()); // top left
             glVertex2f(0.0f, 0.0f); // bottom left
 
-            glTexCoord2d(mTexture.getTexBottomLeftX(), mTexture.getTexBottomLeftY()); // bottom left
+            glTexCoord2d(tex.getTexBottomLeftX(), tex.getTexBottomLeftY()); // bottom left
             glVertex2f(0.0f, 1.0f); // top left
 
-            glTexCoord2d(mTexture.getTexBottomRightX(), mTexture.getTexBottomRightY()); // bottom right
+            glTexCoord2d(tex.getTexBottomRightX(), tex.getTexBottomRightY()); // bottom right
             glVertex2f(1.0f, 1.0f); // top right
         glEnd();
-//        glPopMatrix();
     }
 
     public final void destroy() {
-        mTexture.destroy();
-        GameEntity.destroyEntity(this);
+        for(Texture tex : mTextures) {
+            tex.destroy();
+        }
+        GameEntity.removeEntity(this);
         onDestroy();
     }
 

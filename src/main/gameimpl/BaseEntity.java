@@ -1,6 +1,5 @@
 package main.gameimpl;
 
-import main.GameEntity;
 import main.texture.Texture;
 import main.texture.TextureManager;
 import stuff.Rect2;
@@ -22,7 +21,7 @@ public abstract class BaseEntity extends GameEntity {
         super(TextureManager.loadTexture(file), context);
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0.0f, 0.0f);
-        this.scale = new Vector2(width / mTexture.getWidth(), height / mTexture.getHeight());
+        this.scale = new Vector2(width / mTextures[cur].getWidth(), height / mTextures[cur].getHeight());
         destroyed = false;
     }
 
@@ -30,7 +29,20 @@ public abstract class BaseEntity extends GameEntity {
         super(tex, context);
         this.position = new Vector2(x, y);
         this.velocity = new Vector2(0.0f, 0.0f);
-        this.scale = new Vector2(width / mTexture.getWidth(), height / mTexture.getHeight());
+        this.scale = new Vector2(width / mTextures[cur].getWidth(), height / mTextures[cur].getHeight());
+        destroyed = false;
+    }
+
+    protected BaseEntity(Texture[] textures, String context, float x, float y, float width, float height) {
+        super(textures, context);
+        this.position = new Vector2(x, y);
+        this.velocity = new Vector2(0.0f, 0.0f);
+        if(textures == null) {
+            this.scale = new Vector2(1.0f, 1.0f);
+        }
+        else {
+            this.scale = new Vector2(width / mTextures[cur].getWidth(), height / mTextures[cur].getHeight());
+        }
         destroyed = false;
     }
 
@@ -38,7 +50,7 @@ public abstract class BaseEntity extends GameEntity {
     public void preRender(float dt) {
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
-        glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
+        glScalef(mTextures[cur].getWidth() * this.scale.x, mTextures[cur].getHeight() * this.scale.y, 0.0f);
     }
 
     @Override
@@ -54,7 +66,7 @@ public abstract class BaseEntity extends GameEntity {
     @Override
     public Rect2 getBounds() {
         return new Rect2(this.position,
-                new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
-                        this.position.y - this.mTexture.getHeight() * this.scale.y));
+                new Vector2(this.position.x + this.mTextures[cur].getWidth() * this.scale.x,
+                        this.position.y - this.mTextures[cur].getHeight() * this.scale.y));
     }
 }

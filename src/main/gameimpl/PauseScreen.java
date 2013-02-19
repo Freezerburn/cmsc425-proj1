@@ -1,5 +1,11 @@
 package main.gameimpl;
 
+import main.Game;
+import main.texture.TextureManager;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 /**
  * Created with IntelliJ IDEA.
  * User: freezerburn
@@ -9,23 +15,50 @@ package main.gameimpl;
 public class PauseScreen extends BaseEntity {
     public static final String ENT_NAME = "pause";
 
-    protected PauseScreen(String file, float x, float y, float width, float height) {
-        super(file, "none", x, y, width, height);
+    protected TextEntity text;
+    public boolean canDraw = false;
+
+    protected PauseScreen() {
+        super(TextureManager.DUMMY, "none", 0, 0, Game.windowWidth, Game.windowHeight);
+        BufferedImage actualIm = new BufferedImage(Game.windowWidth, Game.windowHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = actualIm.createGraphics();
+        g.setColor(new Color(0.0f, 0.0f, 0.0f, 0.3f));
+        g.fillRect(0, 0, Game.windowWidth, Game.windowHeight);
+        g.dispose();
+        mTextures[0] = TextureManager.fromBufferedImage(actualIm, "pause");
+        text = new TextEntity("Paused", 0, 0, 30);
+        text.position.x = Game.windowWidth / 2.0f - text.getWidth() / 2.0f;
+        text.position.y = Game.windowHeight / 2.0f + text.getHeight() / 2.0f;
+        GameEntity.removeEntity(text);
+    }
+
+    @Override
+    public void postRender(float dt) {
+        if(canDraw) {
+            super.postRender(dt);
+            text.preRender(dt);
+            text.render(dt);
+            text.postRender(dt);
+        }
+    }
+    @Override
+    public void render(float dt) {
+        if(canDraw) {
+            super.render(dt);
+        }
     }
 
     @Override
     public void tick(float dt) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected void onDestroy() {
-        //To change body of implemented methods use File | Settings | File Templates.
+        text.destroy();
     }
 
     @Override
     protected void handleMessage(String message) {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override

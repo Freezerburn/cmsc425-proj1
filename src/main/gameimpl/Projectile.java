@@ -1,8 +1,6 @@
 package main.gameimpl;
 
 import main.Game;
-import main.GameEntity;
-import main.texture.Texture;
 import main.texture.TextureManager;
 import stuff.Rect2;
 import stuff.Vector2;
@@ -19,17 +17,20 @@ public class Projectile extends BaseEntity {
     public static final String ENT_NAME = "projectile";
     public static final String HOSTILE = "no";
     public static final String FRIENDLY = "yes";
+    public static final String COLLISION_TYPE = "projectile";
 
     public static final float PROJECTILE_VEL = 300.0f;
     public static final float PROJECTILE_WIDTH = 10.0f;
     public static final float PROJECTILE_HEIGHT = 20.0f;
     public static final String PROJECTILE_TEX = "res/projectile.png";
+    public static final String PROJECTILE_TEX_ENEMY = "res/projectileenemy.png";
 
     protected boolean friendly;
     protected String entName;
 
     public Projectile(float x, float y, boolean goingUp, boolean friendly) {
-        super(TextureManager.loadTexture(PROJECTILE_TEX), "none", x, y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
+        super(TextureManager.loadTexture(friendly ? PROJECTILE_TEX : PROJECTILE_TEX_ENEMY),
+                "none", x, y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT);
         if(goingUp) {
             this.velocity.y = PROJECTILE_VEL;
         }
@@ -59,7 +60,7 @@ public class Projectile extends BaseEntity {
     public void preRender(float dt) {
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
-        glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
+        glScalef(mTextures[cur].getWidth() * this.scale.x, mTextures[cur].getHeight() * this.scale.y, 0.0f);
     }
 
     @Override
@@ -88,8 +89,8 @@ public class Projectile extends BaseEntity {
     @Override
     public Rect2 getBounds() {
         return new Rect2(this.position,
-                new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x,
-                        this.position.y - this.mTexture.getHeight() * this.scale.y));
+                new Vector2(this.position.x + this.mTextures[cur].getWidth() * this.scale.x,
+                        this.position.y - this.mTextures[cur].getHeight() * this.scale.y));
     }
 
     @Override
@@ -99,16 +100,14 @@ public class Projectile extends BaseEntity {
 
     @Override
     public String getCollisionType() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return COLLISION_TYPE;
     }
 
     @Override
     protected void onContextEnter() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
     protected void onContextLeave() {
-        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

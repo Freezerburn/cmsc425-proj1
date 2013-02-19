@@ -4,14 +4,10 @@ import handlers.InputEvent;
 import handlers.InputHandler;
 import handlers.KeyboardHandler;
 import main.Game;
-import main.GameEntity;
 import main.GameRunnable;
-import main.texture.TextureManager;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -41,7 +37,11 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
 
     public static Player player;
     public static StatusBar statusBar;
+    public static PauseScreen pauseScreen;
     public static boolean paused;
+
+    public static boolean onStartScreen, gameStart;
+    public static TextEntity title, instr, instrMove, instrShoot, instrBullets, anyKey;
 
     public static void addScore(long toAdd) {
         score += toAdd;
@@ -72,13 +72,26 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
         this.levels.push(new InvaderLevel1());
         this.gameEnded = false;
         paused = false;
+
+        onStartScreen = true;
+        gameStart = false;
+        title = new TextEntity("\"Space Invaders, the game!\"", 130, 400, 30);
+        instr = new TextEntity("Instructions:", 50, 300, 25);
+        instrMove = new TextEntity("Left/Right arrow keys to move left/right", 70, 270, 20);
+        instrShoot = new TextEntity("Spacebar to shoot", 70, 240, 20);
+        instrBullets = new TextEntity("You can fire up to " + Player.MAX_SHOTS + " bullets at a time", 70, 210, 20);
+        anyKey = new TextEntity("Press any key to start", 150, 100, 30);
+
+        InputHandler.getInstance().subscribe(this);
+        Display.setResizable(true);
+    }
+
+    public void initGame() {
         player = new Player(GameEntity.FIRST_CONTEXT,
                 Game.windowWidth / 2.0f + Player.PLAYER_WIDTH / 2.0f,
                 StatusBar.BAR_HEIGHT);
         statusBar = new StatusBar();
-        InputHandler.getInstance().subscribe(this);
         this.levels.get(currentLevel).initInvaders();
-        Display.setResizable(true);
     }
 
     @Override
@@ -89,7 +102,7 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
         long lastTime = System.nanoTime();
         while(this.running) {
             totalTicks++;
-            if(!gameEnded) {
+            if(!gameEnded && gameStart) {
                 if(levels.get(currentLevel).levelFinished()) {
                     currentLevel++;
                     if(currentLevel == levels.size()) {
@@ -103,7 +116,7 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
                     endGame(STATUS_LOSE);
                 }
             }
-            else if(gameOver.isDestroyed()) {
+            else if(gameStart && gameOver.isDestroyed()) {
                 running = false;
             }
             if(Display.wasResized()) {
@@ -139,6 +152,13 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
             }
             GameEntity.collideAll();
             GameEntity.renderAll(delta);
+            if(paused) {
+                pauseScreen.canDraw = true;
+                pauseScreen.preRender(0.0f);
+                pauseScreen.render(0.0f);
+                pauseScreen.postRender(0.0f);
+//                pauseScreen.canDraw = false;
+            }
 
             Display.update();
             Display.sync(this.fps);
@@ -160,14 +180,9 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
         }
         else {
             gameEnded = true;
-            if(status == STATUS_WON) {
-                System.out.println("You win!");
-            }
-            else if(status == STATUS_LOSE) {
-                System.out.println("You lose!");
-            }
-            else if(status == STATUS_QUIT) {
-                System.out.println("Quit game");
+            if(pauseScreen != null && !pauseScreen.isDestroyed()) {
+                pauseScreen.canDraw = false;
+                pauseScreen.destroy();
             }
             GameEntity.destroyAll();
             gameOver = new GameOverScreen(status);
@@ -176,14 +191,46 @@ public class SpaceInvaders implements GameRunnable, KeyboardHandler {
 
     @Override
     public void handle(InputEvent event) {
+        if(!event.isPressed()) {
+            return;
+        }
+
+        if(onStartScreen) {
+            if (event.getKeyCode() == Keyboard.KEY_Q || event.getKeyCode() == Keyboard.KEY_ESCAPE) {
+                endGame(STATUS_QUIT);
+                event.consume();
+                return;
+            }
+            onStartScreen = false;
+            title.destroy();
+            instr.destroy();
+            instrMove.destroy();
+            instrShoot.destroy();
+            instrBullets.destroy();
+            anyKey.destroy();
+            gameStart = true;
+            initGame();
+            event.consume();
+            return;
+        }
+
         if (event.getKeyCode() == Keyboard.KEY_Q || event.getKeyCode() == Keyboard.KEY_ESCAPE) {
 //                    running = false;
-            endGame(STATUS_QUIT);
-            event.consume();
+            if(!paused) {
+                endGame(STATUS_QUIT);
+                event.consume();
+            }
         } else if (event.getKeyCode() == Keyboard.KEY_R && event.isPressed()) {
             restart();
         } else if (event.getKeyCode() == Keyboard.KEY_P && event.isPressed()) {
             paused = !paused;
+            if(paused) {
+                pauseScreen = new PauseScreen();
+            }
+            else {
+                pauseScreen.destroy();
+                pauseScreen = null;
+            }
         }
     }
 }

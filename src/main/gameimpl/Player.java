@@ -4,8 +4,6 @@ import handlers.InputEvent;
 import handlers.InputHandler;
 import handlers.KeyboardHandler;
 import main.Game;
-import main.GameEntity;
-import main.texture.Texture;
 import main.texture.TextureManager;
 import org.lwjgl.input.Keyboard;
 import stuff.Preferences;
@@ -61,6 +59,8 @@ public class Player extends BaseEntity implements KeyboardHandler {
     // Our current health, so we know when to die.
     protected int health;
 
+    protected boolean firstPress = false;
+
     public Player(String context, float x, float y) {
         super(TextureManager.loadTexture(PLAYER_TEX), context, x, y, PLAYER_WIDTH, PLAYER_HEIGHT);
         this.shots = new LinkedList<Projectile>();
@@ -101,8 +101,8 @@ public class Player extends BaseEntity implements KeyboardHandler {
             }
         }
         this.position.x += this.velocity.x * dt;
-        if(position.x + (mTexture.getWidth() * scale.x) > Game.windowWidth) {
-            float newx = Game.windowWidth - (mTexture.getWidth() * scale.x);
+        if(position.x + (mTextures[cur].getWidth() * scale.x) > Game.windowWidth) {
+            float newx = Game.windowWidth - (mTextures[cur].getWidth() * scale.x);
             float diff = position.x - newx;
             projectileStart.x -= diff;
             this.position.x = newx;
@@ -119,7 +119,7 @@ public class Player extends BaseEntity implements KeyboardHandler {
     public void preRender(float dt) {
         glPushMatrix();
         glTranslatef(this.position.x , this.position.y, 0.0f);
-        glScalef(mTexture.getWidth() * this.scale.x, mTexture.getHeight() * this.scale.y, 0.0f);
+        glScalef(mTextures[cur].getWidth() * this.scale.x, mTextures[cur].getHeight() * this.scale.y, 0.0f);
     }
 
     @Override
@@ -160,8 +160,8 @@ public class Player extends BaseEntity implements KeyboardHandler {
     @Override
     public Rect2 getBounds() {
         return new Rect2(new Vector2(this.position.x + 13.0f, this.position.y - 11.0f),
-                new Vector2(this.position.x + this.mTexture.getWidth() * this.scale.x - 13.0f,
-                        this.position.y - this.mTexture.getHeight() * this.scale.y));
+                new Vector2(this.position.x + this.mTextures[cur].getWidth() * this.scale.x - 13.0f,
+                        this.position.y - this.mTextures[cur].getHeight() * this.scale.y));
     }
 
     @Override
@@ -191,6 +191,13 @@ public class Player extends BaseEntity implements KeyboardHandler {
 
     @Override
     public void handle(InputEvent event) {
+        // Ignore the first event given to us. This is to avoid the possibility of a player hitting
+        // left/right when starting the game, and causing the ship to start moving in one direction
+        // of its own volition until the player presses the key for that direction.
+        if(!firstPress) {
+            firstPress = true;
+            return;
+        }
         final int keyCode = event.getKeyCode();
         if(keyCode == fireKey && event.isPressed()) {
             fire();

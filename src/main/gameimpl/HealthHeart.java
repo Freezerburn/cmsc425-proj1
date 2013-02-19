@@ -1,9 +1,5 @@
 package main.gameimpl;
 
-import main.GameEntity;
-import main.texture.TextureManager;
-import stuff.Rect2;
-
 /**
  * Created with IntelliJ IDEA.
  * User: freezerburn

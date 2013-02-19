@@ -16,6 +16,8 @@ public class TextureManager {
     private static final Map<String, Texture> mTextureMap = new HashMap<String, Texture>();
     private static final Map<String, Texture[]> mTextureTileMap = new HashMap<String, Texture[]>();
 
+    public static final Texture DUMMY = fromBufferedImage(new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), "DUMMY");
+
     public static void removeTexture(String name) {
         if(mTextureMap.containsKey(name)) {
             mTextureMap.remove(name);
@@ -58,19 +60,24 @@ public class TextureManager {
         return loader.texture;
     }
 
-    public static Texture fromString(String text) {
-        return fromString(text, text);
+    public static Texture[] fromString(String text) {
+        return fromString(text, text, 18);
     }
 
-    public static Texture fromString(String text, String name) {
+    public static Texture[] fromString(String text, int pointSize) {
+        return fromString(text, text, pointSize);
+    }
 
-        for(char aChar : text.toCharArray()) {
-
+    public static Texture[] fromString(String text, String name, int pointSize) {
+        Texture[] ret = new Texture[text.length()];
+        char[] chars = text.toCharArray();
+        for(int i = 0; i < chars.length; i++) {
+            ret[i] = fromChar(chars[i], String.valueOf(chars[i]) + "_" + pointSize, pointSize);
         }
-        return null;
+        return ret;
     }
 
-    public static Texture fromChar(char theChar, String name) {
+    public static Texture fromChar(char theChar, String name, int pointSize) {
         if(mTextureMap.containsKey(name)) {
             Texture ret = mTextureMap.get(name);
             ret.alloc();
@@ -78,7 +85,7 @@ public class TextureManager {
         }
 
         char[] charData = new char[]{theChar};
-        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
+        Font font = new Font(Font.SANS_SERIF, Font.PLAIN, pointSize);
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice gd = ge.getDefaultScreenDevice();
         GraphicsConfiguration gc = gd.getDefaultConfiguration();
@@ -92,7 +99,7 @@ public class TextureManager {
                 (int)Math.round(r.getHeight() * 1.25),
                 BufferedImage.TYPE_INT_ARGB);
         g = temp.createGraphics();
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.setFont(font);
         g.drawChars(charData, 0, 1, 0, (int)Math.floor(r.getHeight()));
         g.dispose();
